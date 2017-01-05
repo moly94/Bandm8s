@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "755703582779",
+    "firebase_url": "https://bandm8s-75abd.firebaseio.com",
+    "project_id": "bandm8s-75abd",
+    "storage_bucket": "bandm8s-75abd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755703582779:android:61ffaea45cb140ec",
+        "android_client_info": {
+          "package_name": "bandm8s.hagenberg.fh.bandm8s"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755703582779-dc2prdudqvht4h9qvnumaqgu9tu45v40.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bandm8s.hagenberg.fh.bandm8s",
+            "certificate_hash": "9E3867C36EC94C73A32D9AFE4E06DB9564D7CA31"
+          }
+        },
+        {
+          "client_id": "755703582779-7utu3tu2oa6bu131hgpnvl6di4bgfc7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC02nUv2otjO8wCSTSCbrvXkKK9cSZkHLE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755703582779-7utu3tu2oa6bu131hgpnvl6di4bgfc7q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

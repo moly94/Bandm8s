@@ -1,8 +1,14 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +21,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,39 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Set up PagerAdapter for Viewpager
+        FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            private final Fragment[] mFragments = new Fragment[] {
+                //add fragments here
+            };
+
+            private final String[] mFragmentNames = new String[]{
+                //add fragment names here
+            };
+
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments[position];
+            }
+
+            @Override
+            public int getCount() {
+                return mFragments.length;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentNames[position];
+            }
+        };
+
+        //Set up ViewPager
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mPagerAdapter);
+        TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
+
     }
 
     @Override
