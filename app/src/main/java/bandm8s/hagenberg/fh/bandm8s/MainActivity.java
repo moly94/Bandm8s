@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import bandm8s.hagenberg.fh.bandm8s.fragments.EntryListFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,11 +55,15 @@ public class MainActivity extends AppCompatActivity
         //Set up PagerAdapter for Viewpager
         FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
-                //add fragments here
+                new EntryListFragment(),
+                new EntryListFragment(),
+                new EntryListFragment()
             };
 
             private final String[] mFragmentNames = new String[]{
-                //add fragment names here
+                "Fragment 1",
+                    "Fragment 2",
+                    "Fragment 3"
             };
 
             @Override
