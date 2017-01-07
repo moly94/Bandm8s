@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "755703582779-85og16rsr9rfdv3s7lg1qt0l8lt81obt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "bandm8s.hagenberg.fh.bandm8s",
+            "certificate_hash": "D80D96D9D79EFC73F21BA34C9DE9BCDE7DB9E075"
+          }
+        },
+        {
           "client_id": "755703582779-dc2prdudqvht4h9qvnumaqgu9tu45v40.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
