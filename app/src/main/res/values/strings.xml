@@ -23,8 +23,16 @@
     <string name="error_username_required">Username is required</string>
     <string name="error_registration_failed">Registration failed!</string>
 
+
+    <!-- Strings related to profile picture -->
+    <string name="profile_username">profileUsername</string>
+    <string name="profile_genre">Genre: </string>
+    <string name="profile_skill">Skill: </string>
+    <string name="profile_biography">Biography: </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_profile">User Profile</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
