@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="genres_array">
+        <item>Pop</item>
+        <item>Rock</item>
+        <item>Metal</item>
+        <item>Classical</item>
+        <item>Rap</item>
+        <item>Austro-Pop</item>
+        <item>Schlager</item>
+    </string-array>
+
+    <string-array name="skillLevel_array">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Experienced</item>
+        <item>Professional</item>
+    </string-array>
+
+</resources>

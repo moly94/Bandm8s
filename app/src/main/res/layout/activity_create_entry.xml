@@ -19,7 +19,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:text="Title"
@@ -40,7 +41,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:text="Genre"
@@ -58,7 +60,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:text="Skill-Level"
@@ -76,7 +79,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:text="Instruments"
@@ -96,7 +100,8 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:paddingBottom="8dp">
 
             <TextView
                 android:text="Location"
@@ -117,11 +122,12 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <EditText
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:inputType="textMultiLine"
                 android:ems="10"
                 android:id="@+id/txtDescription"
