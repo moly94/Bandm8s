@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,16 +54,16 @@ public class MainActivity extends AppCompatActivity
 
         //Set up PagerAdapter for Viewpager
         FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
-            private final Fragment[] mFragments = new Fragment[] {
-                new EntryListFragment(),
-                new EntryListFragment(),
-                new EntryListFragment()
+            private final Fragment[] mFragments = new Fragment[]{
+                    new EntryListFragment(),
+                    new EntryListFragment(),
+                    new EntryListFragment()
             };
 
             private final String[] mFragmentNames = new String[]{
-                "Fragment 1",
-                    "Fragment 2",
-                    "Fragment 3"
+                    "BandFinder",
+                    "MusicianFinder",
+                    "Profile"
             };
 
             @Override
@@ -136,7 +135,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            startActivity(new Intent(MainActivity.this, UserProfile.class));
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
