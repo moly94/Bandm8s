@@ -49,6 +49,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="bandm8s.hagenberg.fh.bandm8s.LoginChooserActivity" />
         </activity>
+        <activity
+            android:name=".CreateEntryActivity"
+            android:label="Create Entry">
+
+        </activity>
     </application>
 
 </manifest>
