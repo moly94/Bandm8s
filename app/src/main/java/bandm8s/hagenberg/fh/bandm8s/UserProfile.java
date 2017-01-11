@@ -10,9 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import static bandm8s.hagenberg.fh.bandm8s.R.id.imageView;
 
@@ -28,6 +32,13 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String name = user.getDisplayName();
+            String eMail = user.getEmail();
+            EditText mail = (EditText) findViewById(R.id.user_profile_name);
+            mail.setText(eMail);
+        }
 
 
         mGenres = (Spinner) findViewById(R.id.spinnerGenre);
