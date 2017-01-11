@@ -5,31 +5,35 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!--<ProgressBar-->
-            <!--android:id="@+id/user_profile"-->
-            <!--style="?android:attr/progressBarStyleLarge"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginBottom="8dp"-->
-            <!--android:visibility="gone" />-->
+
         <ImageView
             android:id="@+id/header_cover_image"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ppbackground" />
+            android:src="@drawable/bandpicture" />
 
         <ImageButton
+            android:id="@+id/change_user_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="24dp"
+
+            />
+
+        <ImageView
             android:id="@+id/user_profile_photo"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_below="@+id/header_cover_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-60dp"
-           android:elevation="5dp"
+            android:background="@drawable/circular_border_image"
+            android:elevation="5dp"
             android:padding="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/profilepicture" />
+            android:src="@drawable/user_band_cbe4418fb27a65aab32033a18b86c4b8" />
+
 
         <RelativeLayout
             android:id="@+id/profile_layout"
@@ -40,7 +44,7 @@
             android:elevation="4dp"
             android:paddingBottom="24dp">
 
-            <TextView
+            <EditText
                 android:id="@+id/user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,16 +55,7 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/user_profile_short_bio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_profile_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
-                android:text="@string/profile_genre"
-                android:textColor="#fff"
-                android:textSize="14sp" />
+
         </RelativeLayout>
 
 
@@ -71,29 +66,90 @@
             android:layout_marginTop="5dp"
             android:orientation="vertical">
 
-            <TextView
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="#fff"
                 android:clickable="true"
-                android:elevation="4dp"
-                android:padding="20dp"
-                android:text="@string/profile_skill" />
+                android:padding="10dp">
 
-            <TextView
+                <TextView
+                    android:id="@+id/lblSkill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/profile_skill" />
+
+                <Spinner
+                    android:id="@+id/spinnerSkill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp"
                 android:background="#fff"
                 android:clickable="true"
-                android:elevation="4dp"
-                android:padding="20dp"
-                android:text="@string/profile_biography" />
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/user_profile_short_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/profile_genre"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="#fff"
+                android:clickable="true"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/profile_biography"
+                    android:textSize="14sp" />
 
 
+            </TableRow>
+
+            <EditText
+                android:id="@+id/txtLocation"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp"
+                android:paddingEnd="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:ems="10"
+                android:gravity="top|left"
+                android:hint="@string/profile_biography_hint"
+                android:inputType="textMultiLine"
+                android:lines="25"
+                android:maxLines="25"
+                android:minLines="2"
+                android:scrollbars="vertical"
+                android:paddingLeft="15dp" />
 
         </LinearLayout>
     </RelativeLayout>
