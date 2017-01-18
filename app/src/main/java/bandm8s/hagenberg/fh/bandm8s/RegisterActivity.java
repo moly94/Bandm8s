@@ -3,6 +3,7 @@ package bandm8s.hagenberg.fh.bandm8s;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,18 +28,39 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import bandm8s.hagenberg.fh.bandm8s.models.User;
+
 import static android.Manifest.permission.READ_CONTACTS;
+import static bandm8s.hagenberg.fh.bandm8s.R.string.error_registration_failed;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class RegisterActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    private static final String TAG = "RegisterActivity";
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -51,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -58,36 +82,68 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     // UI references.
     private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private EditText mPasswordConfirmedView;
     private View mProgressView;
     private View mLoginFormView;
+
+    private Switch mBandOrUser;
+
+    //Firebase
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseAuth mAuth;
+    private FirebaseDatabase mDatabase;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setupActionBar();
+
+        //Set up values for Firebase
+
+        mAuth= FirebaseAuth.getInstance();
+        mDatabase=FirebaseDatabase.getInstance();
+
+        mAuthListener= new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    showProgress(false);
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    Intent i= new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                } else {
+                    // User is signed out
+                    Log.d( TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };
+
         // Set up the login form.
+
+        mBandOrUser = (Switch) findViewById(R.id.bandOrUser);
+        mBandOrUser.setChecked(true);
+
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
+        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
+
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        mPasswordConfirmedView = (EditText) findViewById(R.id.password2);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_register_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                checkIfUserExists();
             }
         });
 
@@ -154,6 +210,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+    /*
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -209,12 +266,107 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }*/
+
+    private boolean validateEmailPassword () {
+        View focusView = null;
+        boolean valid=true;
+        String email= mEmailView.getText().toString();
+        String password= mPasswordView.getText().toString();
+        String password2 = mPasswordConfirmedView.getText().toString();
+        String username=mUsernameView.getText().toString();
+
+
+        if (email.isEmpty()) {
+            mEmailView.setError(getString( R.string.error_field_required));
+            valid = false;
+            focusView=mEmailView;
+        }
+
+        else if (password.isEmpty() || password.length() < 5) {
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            valid = false;
+        }
+
+        else {
+            mPasswordView.setError(null);
+        }
+        return valid;
+    }
+
+    private void createUserwithEmail() {
+
+        final String email= mEmailView.getText().toString();
+        String password= mPasswordView.getText().toString();
+
+        if (!validateEmailPassword()) {
+            Toast.makeText(getApplicationContext(), error_registration_failed,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), error_registration_failed,
+                                    Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+                        } else {
+                            writeNewUser();
+
+                        }
+                    }
+                });
+
     }
 
     /**
-     * Shows the progress UI and hides the login form.
+     *Creates new User in the Firebase Database
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void writeNewUser() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String email = user.getEmail();
+            String username= mUsernameView.getText().toString();
+            String uid = user.getUid();
+
+            UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+            //TODO: Change to own profile pic!!!
+            //UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder()
+            //        .setDisplayName(username).setPhotoUri(Uri.parse("gs://project-cow.appspot.com/testProfile.png")).build();
+
+           // user.updateProfile(setDisplayName)
+           //         .addOnCompleteListener(new OnCompleteListener<Void>() {
+           //             @Override
+           //             public void onComplete(@NonNull Task<Void> task) {
+           //                 if (task.isSuccessful()) {
+           //                     Log.d(TAG, "User profile updated.");
+           //                 }
+           //             }
+           //         });
+
+            //if(mBandOrUser.isChecked()) {
+            //}
+            //else {
+                User userObject = new User(username, email);
+                DatabaseReference myRef = mDatabase.getReference("users");
+                myRef.child(uid).setValue(userObject);
+                showProgress(false);
+            //}
+        }
+    }
+
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
@@ -245,6 +397,65 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    /**
+     * Checks if user already exists in database (email and username are checked)
+     * if it doesn't exist createUserWithEmail() is called
+     */
+    private void checkIfUserExists() {
+        String email=mEmailView.getText().toString();
+        String username= mUsernameView.getText().toString();
+
+        DatabaseReference myRef = mDatabase.getReference("users");
+
+        Query searchForUserName=myRef.orderByChild("username").equalTo(username);
+        searchForUserName.addListenerForSingleValueEvent(new ValueEventListener () {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    Toast.makeText(getApplicationContext(), "User already exists! (Username)",
+                            Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "User exists");
+                    showProgress(false);
+                } else {
+                    DatabaseReference myRef = mDatabase.getReference("users");
+                    Query searchForUserMail= myRef.orderByChild("email").equalTo(mEmailView.getText().toString());
+
+                    showProgress(true);
+
+                    searchForUserMail.addListenerForSingleValueEvent(new ValueEventListener () {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getChildrenCount() != 0) {
+                                Toast.makeText(getApplicationContext(), "User already exists! (email)",
+                                        Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "User exists");
+                                showProgress(false);
+                            } else {
+                                createUserwithEmail();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+
+                    });
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+
+        });
+
     }
 
     @Override

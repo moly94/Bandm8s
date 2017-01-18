@@ -18,7 +18,6 @@ public class LoginChooserActivity extends AppCompatActivity {
             @Override
             public void onClick (View view){
                 Intent i= new Intent(getApplicationContext(), LoginActivity.class);
-                i.putExtra("LoginChooser", "Login");
                 startActivity(i);
             }
         });
@@ -28,7 +27,6 @@ public class LoginChooserActivity extends AppCompatActivity {
             @Override
             public void onClick (View view){
                 Intent i= new Intent(getApplicationContext(), RegisterActivity.class);
-                i.putExtra("LoginChooser", "Register");
                 startActivity(i);
             }
         });
