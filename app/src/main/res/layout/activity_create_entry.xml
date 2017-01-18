@@ -89,13 +89,24 @@
                 android:id="@+id/lblInstruments"
                 android:layout_weight="1"/>
 
+
+            <bandm8s.hagenberg.fh.bandm8s.MultiSelectionSpinner
+                android:id="@+id/multiSpinnerInstruments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Instruments"
+                android:layout_weight="1" />
+
+            <!--
             <CheckedTextView
-                android:text="CheckedTextView"
+                android:text="Instruments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/checkedTextViewInstruments"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:layout_weight="1"
-                android:checked="false" />
+                android:checked="true" />
+                -->
         </TableRow>
 
         <TableRow

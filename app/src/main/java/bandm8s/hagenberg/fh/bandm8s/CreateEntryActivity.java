@@ -4,7 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.Spinner;
 
 public class CreateEntryActivity extends AppCompatActivity {
@@ -12,6 +14,7 @@ public class CreateEntryActivity extends AppCompatActivity {
     //GUI
     private Spinner mGenres;
     private Spinner mSkill;
+    private MultiSelectionSpinner mInstruments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,10 @@ public class CreateEntryActivity extends AppCompatActivity {
                 R.array.skillLevel_array, android.R.layout.simple_spinner_item);
         skillAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSkill.setAdapter(skillAdapter);
+
+        mInstruments = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerInstruments);
+        mInstruments.setItems(getResources().getStringArray(R.array.instruments_array));
+
     }
 
     @Override

@@ -17,4 +17,14 @@
         <item>Professional</item>
     </string-array>
 
+    <string-array name="instruments_array">
+        <item>Guitar</item>
+        <item>Bass</item>
+        <item>Drums</item>
+        <item>Vocals</item>
+        <item>Keyboard</item>
+        <item>Piano</item>
+        <item>Violin</item>
+    </string-array>
+
 </resources>
