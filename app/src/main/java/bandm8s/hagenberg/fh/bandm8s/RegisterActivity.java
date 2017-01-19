@@ -217,32 +217,44 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
 
         if (email.isEmpty()) {
+            showProgress(false);
             mEmailView.setError(getString( R.string.error_field_required));
+            mEmailView.requestFocus();
             valid = false;
-            focusView=mEmailView;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            valid = false;
         }
-
         else if (password.isEmpty() || password.length() < 5) {
+            showProgress(false);
             mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.requestFocus();
             valid = false;
+        } else if (!password.equals(password2)){
+            showProgress(false);
+            mPasswordConfirmedView.setError("Passwords don't match");
+            mPasswordConfirmedView.requestFocus();
+            valid=false;
         }
 
         else {
             mPasswordView.setError(null);
+            mPasswordConfirmedView.setError(null);
         }
         return valid;
+    }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+
+        return email.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])");
     }
 
     private void createUserwithEmail() {
 
         final String email= mEmailView.getText().toString();
         String password= mPasswordView.getText().toString();
-
-        if (!validateEmailPassword()) {
-            Toast.makeText(getApplicationContext(), error_registration_failed,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
 
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -348,6 +360,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
      * if it doesn't exist createUserWithEmail() is called
      */
     private void checkIfUserExists() {
+        if (!validateEmailPassword()) {
+            return;
+        }
         String email=mEmailView.getText().toString();
         String username= mUsernameView.getText().toString();
 
