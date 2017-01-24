@@ -143,8 +143,10 @@
                 android:layout_height="match_parent"
                 android:inputType="textMultiLine"
                 android:ems="10"
+                android:hint="Add Text here!"
                 android:id="@+id/txtDescription"
                 android:layout_weight="1"/>
+
         </TableRow>
     </TableLayout>
 

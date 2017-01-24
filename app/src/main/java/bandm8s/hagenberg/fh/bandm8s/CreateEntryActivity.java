@@ -7,14 +7,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class CreateEntryActivity extends AppCompatActivity {
+
+
+    private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    //Database Reference
+    private DatabaseReference mDataBase;
 
     //GUI
     private Spinner mGenres;
     private Spinner mSkill;
     private MultiSelectionSpinner mInstruments;
+    private EditText mTitle, mLocation, mDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +52,21 @@ public class CreateEntryActivity extends AppCompatActivity {
         mInstruments = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerInstruments);
         mInstruments.setItems(getResources().getStringArray(R.array.instruments_array));
 
+        mTitle = (EditText) findViewById(R.id.txtTitle);
+        mLocation = (EditText) findViewById(R.id.txtLocation);
+        mDescription = (EditText) findViewById(R.id.txtDescription);
+
+        //  initialize_database_ref
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.activity_create_entry_menu, menu);
         return true;
     }
 
@@ -56,10 +78,14 @@ public class CreateEntryActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_confirm) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    static String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }
