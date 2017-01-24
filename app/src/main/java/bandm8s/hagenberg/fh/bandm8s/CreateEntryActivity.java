@@ -20,6 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class CreateEntryActivity extends AppCompatActivity {
@@ -70,10 +74,10 @@ public class CreateEntryActivity extends AppCompatActivity {
         //  initialize_database_ref
         mDataBase = FirebaseDatabase.getInstance().getReference();
 
+        //get Current User data
         mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 mCurrentUser = dataSnapshot.getValue(User.class);
 
                 Log.d(TAG, "User name: " + mCurrentUser.getmUsername() + ", email " + mCurrentUser.getmEmail());
@@ -108,10 +112,41 @@ public class CreateEntryActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_confirm) {
-            return true;
+            createEntry();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void createEntry() {
+        final String title = mTitle.getText().toString();
+        final String location = mLocation.getText().toString();
+        final String description = mDescription.getText().toString();
+
+        final String genre = mGenres.getSelectedItem().toString();
+        final String skill = mSkill.getSelectedItem().toString();
+        final String instruments = mInstruments.getSelectedItemsAsString();
+
+        final String userid = mUserId;
+        final String author = mCurrentUser.getmUsername();
+        final boolean isbandentry = mCurrentUser.ismIsBand();
+
+        String key = mDataBase.child("entries").push().getKey();
+        Entry entry = new Entry(userid, author, title, location, description, genre, skill, instruments, isbandentry);
+        Map<String, Object> entryValues = entry.toMap();
+
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/entries/" + key, entryValues);
+
+        if(isbandentry) {
+            childUpdates.put("/band-posts/" + userid + "/" + key, entryValues);
+        }
+        else {
+            childUpdates.put("/user-posts/" + userid + "/" + key, entryValues);
+        }
+
+        mDataBase.updateChildren(childUpdates);
+        finish();
     }
 
     static String getUid() {
