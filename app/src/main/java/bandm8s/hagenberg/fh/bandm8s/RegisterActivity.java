@@ -308,13 +308,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
            //         });
 
             if(mBandOrUser.isChecked()) {
-                Band bandObject = new Band(username, email);
-                DatabaseReference myRef = mDatabase.getReference("bands");
+                User bandObject = new User(username, email, true);
+                DatabaseReference myRef = mDatabase.getReference("users");
                 myRef.child(uid).setValue(bandObject);
                 showProgress(false);
             }
             else {
-                User userObject = new User(username, email);
+                User userObject = new User(username, email, false);
                 DatabaseReference myRef = mDatabase.getReference("users");
                 myRef.child(uid).setValue(userObject);
                 showProgress(false);

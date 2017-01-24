@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity
             private final String[] mFragmentNames = new String[]{
                     "BandFinder",
                     "MusicianFinder",
-                    "Profile"
+                    "Chats"
             };
 
             @Override

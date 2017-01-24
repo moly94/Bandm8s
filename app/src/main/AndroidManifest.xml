@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name=".LoginChooserActivity"
-            android:label="LoginChooserActivity"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,14 +51,11 @@
         </activity>
         <activity
             android:name=".CreateEntryActivity"
-            android:label="Create Entry">
-
-        </activity>
-
+            android:label="Create Entry"></activity>
         <activity
             android:name=".UserProfile"
-            android:label="@string/title_activity_profile">
-        </activity>
+            android:label="@string/title_activity_profile"></activity>
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>
