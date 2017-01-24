@@ -43,4 +43,7 @@
     </string>
     <string name="logout">Logout!</string>
 
+    <!-- Strings related to Chat-->
+    <string name="write_message">Your message</string>
+
 </resources>
