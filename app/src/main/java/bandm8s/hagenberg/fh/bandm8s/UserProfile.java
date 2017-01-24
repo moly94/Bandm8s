@@ -102,7 +102,7 @@ public class UserProfile extends AppCompatActivity {
         return true;
     }
 
-    @Override //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab
+    @Override //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab oder macht nichts
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
