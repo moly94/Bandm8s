@@ -83,7 +83,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private FirebaseDatabase mDatabase;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,10 +91,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
         //Set up values for Firebase
 
-        mAuth= FirebaseAuth.getInstance();
-        mDatabase=FirebaseDatabase.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance();
 
-        mAuthListener= new FirebaseAuth.AuthStateListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -103,11 +102,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                     // User is signed in
                     showProgress(false);
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Intent i= new Intent(getApplicationContext(), MainActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
                 } else {
                     // User is signed out
-                    Log.d( TAG, "onAuthStateChanged:signed_out");
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
             }
         };
@@ -193,38 +192,35 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
 
-    private boolean validateEmailPassword () {
+    private boolean validateEmailPassword() {
         View focusView = null;
-        boolean valid=true;
-        String email= mEmailView.getText().toString();
-        String password= mPasswordView.getText().toString();
+        boolean valid = true;
+        String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
         String password2 = mPasswordConfirmedView.getText().toString();
-        String username=mUsernameView.getText().toString();
+        String username = mUsernameView.getText().toString();
 
 
         if (email.isEmpty()) {
             showProgress(false);
-            mEmailView.setError(getString( R.string.error_field_required));
+            mEmailView.setError(getString(R.string.error_field_required));
             mEmailView.requestFocus();
             valid = false;
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             valid = false;
-        }
-        else if (password.isEmpty() || password.length() < 5) {
+        } else if (password.isEmpty() || password.length() < 5) {
             showProgress(false);
             mPasswordView.setError(getString(R.string.error_invalid_password));
             mPasswordView.requestFocus();
             valid = false;
-        } else if (!password.equals(password2)){
+        } else if (!password.equals(password2)) {
             showProgress(false);
             mPasswordConfirmedView.setError("Passwords don't match");
             mPasswordConfirmedView.requestFocus();
-            valid=false;
-        }
-
-        else {
+            valid = false;
+        } else {
             mPasswordView.setError(null);
             mPasswordConfirmedView.setError(null);
         }
@@ -239,8 +235,8 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
 
     private void createUserwithEmail() {
 
-        final String email= mEmailView.getText().toString();
-        String password= mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        String password = mPasswordView.getText().toString();
 
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -266,7 +262,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     }
 
     /**
-     *Creates new User in the Firebase Database
+     * Creates new User in the Firebase Database
      */
     private void writeNewUser() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -275,31 +271,30 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (user != null) {
             // Name, email address, and profile photo Url
             String email = user.getEmail();
-            String username= mUsernameView.getText().toString();
+            String username = mUsernameView.getText().toString();
             String uid = user.getUid();
 
-            UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+            UserProfileChangeRequest setDisplayName = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
             //TODO: Change to own profile pic!!!
             //UserProfileChangeRequest setDisplayName= new UserProfileChangeRequest.Builder()
             //        .setDisplayName(username).setPhotoUri(Uri.parse("gs://project-cow.appspot.com/testProfile.png")).build();
 
-           // user.updateProfile(setDisplayName)
-           //         .addOnCompleteListener(new OnCompleteListener<Void>() {
-           //             @Override
-           //             public void onComplete(@NonNull Task<Void> task) {
-           //                 if (task.isSuccessful()) {
-           //                     Log.d(TAG, "User profile updated.");
-           //                 }
-           //             }
-           //         });
+            // user.updateProfile(setDisplayName)
+            //         .addOnCompleteListener(new OnCompleteListener<Void>() {
+            //             @Override
+            //             public void onComplete(@NonNull Task<Void> task) {
+            //                 if (task.isSuccessful()) {
+            //                     Log.d(TAG, "User profile updated.");
+            //                 }
+            //             }
+            //         });
 
-            if(mBandOrUser.isChecked()) {
+            if (mBandOrUser.isChecked()) {
                 User bandObject = new User(username, email, true);
                 DatabaseReference myRef = mDatabase.getReference("users");
                 myRef.child(uid).setValue(bandObject);
                 showProgress(false);
-            }
-            else {
+            } else {
                 User userObject = new User(username, email, false);
                 DatabaseReference myRef = mDatabase.getReference("users");
                 myRef.child(uid).setValue(userObject);
@@ -349,13 +344,13 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         if (!validateEmailPassword()) {
             return;
         }
-        String email=mEmailView.getText().toString();
-        String username= mUsernameView.getText().toString();
+        String email = mEmailView.getText().toString();
+        String username = mUsernameView.getText().toString();
 
         DatabaseReference myRef = mDatabase.getReference("users");
 
-        Query searchForUserName=myRef.orderByChild("username").equalTo(username);
-        searchForUserName.addListenerForSingleValueEvent(new ValueEventListener () {
+        Query searchForUserName = myRef.orderByChild("username").equalTo(username);
+        searchForUserName.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() != 0) {
@@ -365,11 +360,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                     showProgress(false);
                 } else {
                     DatabaseReference myRef = mDatabase.getReference("users");
-                    Query searchForUserMail= myRef.orderByChild("email").equalTo(mEmailView.getText().toString());
+                    Query searchForUserMail = myRef.orderByChild("email").equalTo(mEmailView.getText().toString());
 
                     showProgress(true);
 
-                    searchForUserMail.addListenerForSingleValueEvent(new ValueEventListener () {
+                    searchForUserMail.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (dataSnapshot.getChildrenCount() != 0) {
@@ -393,6 +388,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
                 }
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -402,6 +398,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         });
 
     }
+
     @Override
     public void onStart() {
         super.onStart();

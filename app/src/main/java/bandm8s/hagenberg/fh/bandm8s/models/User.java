@@ -1,5 +1,6 @@
 package bandm8s.hagenberg.fh.bandm8s.models;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -20,15 +21,15 @@ public class User {
 
 
     //TODO: Change to own profile pic!!!
-    public User(String username, String email, boolean isBand){
+    public User(String username, String email, boolean isBand) {
         this(username, email, "gs://project-cow.appshot.com/testProfile.png", isBand);
     }
 
-    public User(String username, String email, String profilePic, boolean isBand){
-        mUsername=username;
-        mEmail=email;
-        mProfilePic=profilePic;
-        mIsBand=isBand;
+    public User(String username, String email, String profilePic, boolean isBand) {
+        mUsername = username;
+        mEmail = email;
+        mProfilePic = profilePic;
+        mIsBand = isBand;
     }
 
     public String getmUsername() {

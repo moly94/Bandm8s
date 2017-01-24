@@ -1,10 +1,13 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
 
-import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +20,13 @@ import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import static bandm8s.hagenberg.fh.bandm8s.R.id.imageView;
+import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 
 public class UserProfile extends AppCompatActivity {
@@ -27,18 +35,36 @@ public class UserProfile extends AppCompatActivity {
     private Spinner mSkill;
     private ImageButton changeProfilePicture;
     private ImageView profilePicture;
+    private DatabaseReference mDataBase;
+    private FirebaseUser mUser;
+    private User mCurrentUser;
+    private static final int SELECT_PICTURE = 0;
+    private String mUserId = getUid();
+    private EditText userName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String name = user.getDisplayName();
-            String eMail = user.getEmail();
-            EditText mail = (EditText) findViewById(R.id.user_profile_name);
-            mail.setText(eMail);
-        }
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        userName = (EditText) findViewById(R.id.user_profile_name);
+        userName.setFocusable(false);
+        userName.clearFocus();
+        mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mCurrentUser = dataSnapshot.getValue(User.class);
+                setUserName(mCurrentUser, userName);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         mGenres = (Spinner) findViewById(R.id.spinnerGenre);
@@ -61,9 +87,10 @@ public class UserProfile extends AppCompatActivity {
         changeProfilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent imgIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent imgIntent = new Intent();
                 imgIntent.setType("image/*");
-                startActivityForResult(imgIntent, 10);
+                imgIntent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
             }
         });
     }
@@ -75,15 +102,39 @@ public class UserProfile extends AppCompatActivity {
         return true;
     }
 
-//    @Override Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // TODO Auto-generated method stub
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//            profilePicture.setImageBitmap(bitmap);
-//        }
-//    }
+    @Override //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Bitmap bitmap = getPath(data.getData());
+            profilePicture.setImageBitmap(bitmap);
+        }
+    }
+
+    private Bitmap getPath(Uri uri) {
+
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String filePath = cursor.getString(column_index);
+        cursor.close();
+        // Convert file path into bitmap image using below line.
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+        return bitmap;
+    }
+
+    private void selectImage() {
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,6 +150,14 @@ public class UserProfile extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    // setContentView(R.layout.user_profile);
+
+    static String getUid() {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    private void setUserName(User user, EditText userName) {
+
+        userName.setText(mCurrentUser.getmUsername());
+    }
 }
 
