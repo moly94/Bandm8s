@@ -1,7 +1,9 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,13 +14,22 @@ import android.widget.Spinner;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class CreateEntryActivity extends AppCompatActivity {
 
+    private static final String TAG = CreateEntryActivity.class.getSimpleName();
 
     private FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    private String mUserId = getUid();
+
+    private User mCurrentUser;
 
     //Database Reference
     private DatabaseReference mDataBase;
@@ -59,7 +70,25 @@ public class CreateEntryActivity extends AppCompatActivity {
         //  initialize_database_ref
         mDataBase = FirebaseDatabase.getInstance().getReference();
 
+        mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
+                mCurrentUser = dataSnapshot.getValue(User.class);
+
+                Log.d(TAG, "User name: " + mCurrentUser.getmUsername() + ", email " + mCurrentUser.getmEmail());
+                if (mCurrentUser.ismIsBand()) {
+                    Log.d(TAG, "User is a band!");
+                }
+                else
+                    Log.d(TAG, "User is NOT a band!");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
