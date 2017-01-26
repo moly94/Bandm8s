@@ -10,7 +10,7 @@
     tools:context="bandm8s.hagenberg.fh.bandm8s.ChatActivity">
 
     <include
-        android:id="@+id/story_author_layout"
+        android:id="@+id/chat_opposite"
         layout="@layout/include_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,9 +21,9 @@
         android:id="@+id/star_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/story_author_layout"
+        android:layout_alignBottom="@+id/chat_opposite"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/story_author_layout"
+        android:layout_alignTop="@+id/chat_opposite"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
