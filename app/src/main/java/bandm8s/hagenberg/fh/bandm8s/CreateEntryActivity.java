@@ -139,10 +139,12 @@ public class CreateEntryActivity extends AppCompatActivity {
         childUpdates.put("/entries/" + key, entryValues);
 
         if(isbandentry) {
-            childUpdates.put("/band-posts/" + userid + "/" + key, entryValues);
+            //childUpdates.put("/band-entries/" + userid + "/" + key, entryValues);
+            childUpdates.put("/band-entries/" + key + "/" , entryValues);
         }
         else {
-            childUpdates.put("/user-posts/" + userid + "/" + key, entryValues);
+            //childUpdates.put("/user-entries/" + userid + "/" + key, entryValues
+            childUpdates.put("/user-entries/" + key + "/" , entryValues);
         }
 
         mDataBase.updateChildren(childUpdates);

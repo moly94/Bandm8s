@@ -27,7 +27,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import bandm8s.hagenberg.fh.bandm8s.fragments.BandEntriesFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.EntryListFragment;
+import bandm8s.hagenberg.fh.bandm8s.fragments.UserEntriesFragment;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,14 +88,14 @@ public class MainActivity extends BaseActivity
         //Set up PagerAdapter for Viewpager
         FragmentPagerAdapter mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[]{
-                    new EntryListFragment(),
-                    new EntryListFragment(),
-                    new EntryListFragment()
+                    new BandEntriesFragment(),
+                    new UserEntriesFragment(),
+                    new BandEntriesFragment()
             };
 
             private final String[] mFragmentNames = new String[]{
-                    "BandFinder",
                     "MusicianFinder",
+                    "BandFinder",
                     "Chats"
             };
 
