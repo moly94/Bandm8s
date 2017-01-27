@@ -81,7 +81,8 @@ public class UserProfile extends AppCompatActivity {
                 R.array.skillLevel_array, android.R.layout.simple_spinner_item);
         skillAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSkill.setAdapter(skillAdapter);
-
+        MultiSelectionSpinner mInstruments = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerInstruments);
+        mInstruments.setItems(getResources().getStringArray(R.array.instruments_array));
         profilePicture = (ImageView) findViewById(R.id.change_user_photo);
         changeProfilePicture = (ImageButton) findViewById(R.id.change_user_photo);
         changeProfilePicture.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +112,7 @@ public class UserProfile extends AppCompatActivity {
             profilePicture.setImageBitmap(bitmap);
         }
     }
-
+//Picaso https://github.com/square/picasso7
     private Bitmap getPath(Uri uri) {
 
         String[] projection = {MediaStore.Images.Media.DATA};
