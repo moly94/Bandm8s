@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,33 +32,80 @@ import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class UserProfile extends AppCompatActivity {
 
-    private Spinner mGenres;
+    private static final String TAG = UserProfile.class.getSimpleName();
+
+    private MultiSelectionSpinner mGenres;
     private Spinner mSkill;
-    private ImageButton changeProfilePicture;
-    private ImageView profilePicture;
+    private MultiSelectionSpinner mInstruments;
+
     private DatabaseReference mDataBase;
+    private FirebaseDatabase mFireBaseDataBase;
     private FirebaseUser mUser;
     private User mCurrentUser;
-    private static final int SELECT_PICTURE = 0;
+
     private String mUserId = getUid();
-    private EditText userName;
+    private EditText mUserName;
+    private EditText mUserBiography;
+
+
+    private ImageButton mChangeProfilePicture;
+    private ImageButton mSaveProfile;
+    private ImageView mProfilePicture;
+    private static final int SELECT_PICTURE = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_profile);
+        mFireBaseDataBase = FirebaseDatabase.getInstance();
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        userName = (EditText) findViewById(R.id.user_profile_name);
-        userName.setFocusable(false);
-        userName.clearFocus();
+        mUserName = (EditText) findViewById(R.id.user_profile_name);
+        mUserName.setFocusable(false);
+        mUserName.clearFocus();
+
+
+        mGenres = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerGenresProfile);
+        mGenres.setItems(getResources().getStringArray(R.array.genres_array));
+
+
+        mSkill = (Spinner) findViewById(R.id.spinnerSkill);
+        ArrayAdapter<CharSequence> skillAdapter = ArrayAdapter.createFromResource(this,
+                R.array.skillLevel_array, android.R.layout.simple_spinner_item);
+        skillAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSkill.setAdapter(skillAdapter);
+
+        mInstruments = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerInstrumentsProfile);
+        mInstruments.setItems(getResources().getStringArray(R.array.instruments_array));
+
+        mUserBiography = (EditText) findViewById(R.id.user_biography);
+
+        mProfilePicture = (ImageView) findViewById(R.id.user_profile_photo);
+        mChangeProfilePicture = (ImageButton) findViewById(R.id.change_user_photo);
+        mChangeProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent imgIntent = new Intent();
+                imgIntent.setType("image/*");
+                imgIntent.setAction(Intent.ACTION_GET_CONTENT);
+                //startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
+            }
+        });
+        mSaveProfile = (ImageButton) findViewById(R.id.saveChangedData);
+        mSaveProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateUser();
+
+            }
+        });
         mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 mCurrentUser = dataSnapshot.getValue(User.class);
-                setUserName(mCurrentUser, userName);
+                setProfile();
             }
 
             @Override
@@ -65,54 +113,28 @@ public class UserProfile extends AppCompatActivity {
 
             }
         });
-
-
-        mGenres = (Spinner) findViewById(R.id.spinnerGenre);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> genreAdapter = ArrayAdapter.createFromResource(this,
-                R.array.genres_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        genreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        mGenres.setAdapter(genreAdapter);
-
-        mSkill = (Spinner) findViewById(R.id.spinnerSkill);
-        ArrayAdapter<CharSequence> skillAdapter = ArrayAdapter.createFromResource(this,
-                R.array.skillLevel_array, android.R.layout.simple_spinner_item);
-        skillAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSkill.setAdapter(skillAdapter);
-        MultiSelectionSpinner mInstruments = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerInstruments);
-        mInstruments.setItems(getResources().getStringArray(R.array.instruments_array));
-        profilePicture = (ImageView) findViewById(R.id.change_user_photo);
-        changeProfilePicture = (ImageButton) findViewById(R.id.change_user_photo);
-        changeProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent imgIntent = new Intent();
-                imgIntent.setType("image/*");
-                imgIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
-            }
-        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.save_changed_profile_data, menu);
         return true;
     }
 
-    @Override //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab oder macht nichts
+    @Override
+    //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab oder macht nichts
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             Bitmap bitmap = getPath(data.getData());
-            profilePicture.setImageBitmap(bitmap);
+            mProfilePicture.setImageBitmap(bitmap);
         }
     }
-//Picaso https://github.com/square/picasso7
+
+    //Picaso https://github.com/square/picasso7
     private Bitmap getPath(Uri uri) {
 
         String[] projection = {MediaStore.Images.Media.DATA};
@@ -145,8 +167,8 @@ public class UserProfile extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.saveChangedData) {
+            updateUser();
         }
 
         return super.onOptionsItemSelected(item);
@@ -156,9 +178,58 @@ public class UserProfile extends AppCompatActivity {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    private void setUserName(User user, EditText userName) {
+    private void setProfile() {
 
-        userName.setText(mCurrentUser.getmUsername());
+        //set Name of User
+        mUserName.setText(mCurrentUser.getmUsername());
+
+        //set MultiSelectionSpinner Genres
+        String genre = mCurrentUser.getmGenre();
+        String[] genres = genre.split(", ");
+        mGenres.setSelection(genres);
+
+
+        String skill = mCurrentUser.getmSkill();
+        int i = 0;
+        switch (skill) {
+            case "Beginner":
+                i = 0;
+                break;
+            case "Intermediate":
+                i = 1;
+                break;
+            case "Experienced":
+                i = 2;
+                break;
+            case "Professional":
+                i = 3;
+                break;
+        }
+        mSkill.setSelection(i);
+
+
+        //set MultiSelectionSpinner Instruments
+        String instrument = mCurrentUser.getmInstruments();
+        String[] instruments = instrument.split(", ");
+        mInstruments.setSelection(instruments);
+
+        //set Biography of User
+        mUserBiography.setText(mCurrentUser.getmBiography());
+    }
+
+    private void updateUser() {
+        String username = mUserName.getText().toString();
+        String genre = mGenres.getSelectedItem().toString();
+        String skill = mSkill.getSelectedItem().toString();
+        String instruments = mInstruments.getSelectedItemsAsString();
+        String biography = mUserBiography.getText().toString();
+
+        User bandObject = new User(username, genre, skill, instruments, biography);
+        DatabaseReference myRef = mFireBaseDataBase.getReference("users");
+        myRef.child(mUser.getUid()).setValue(bandObject);
+        Toast.makeText(UserProfile.this, "UserProfile Successfully updated",
+                Toast.LENGTH_LONG).show();
+
     }
 }
 

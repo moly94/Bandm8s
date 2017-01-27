@@ -37,11 +37,24 @@
             android:elevation="4dp"
             android:paddingBottom="24dp">
             <ImageButton
+                android:id="@+id/saveChangedData"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp"
+                android:src="@drawable/ic_menu_manage"
+                android:background="@null"
+                android:layout_marginRight="35dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+            <ImageButton
                 android:id="@+id/change_user_photo"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:paddingTop="20dp"
                 android:paddingBottom="24dp"
-                android:src="@drawable/profilepicture"
+                android:src="@drawable/ic_menu_camera"
+                android:background="@null"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
             <EditText
@@ -81,8 +94,8 @@
                     android:text="@string/profile_genre"
                     android:textSize="14sp" />
 
-                <Spinner
-                    android:id="@+id/spinnerGenre"
+                <bandm8s.hagenberg.fh.bandm8s.MultiSelectionSpinner
+                    android:id="@+id/multiSpinnerGenresProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
@@ -118,17 +131,16 @@
 
                 <TextView
                     android:text="@string/profile_instruments"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/lblInstruments"
                     android:layout_weight="1"/>
 
 
                 <bandm8s.hagenberg.fh.bandm8s.MultiSelectionSpinner
-                    android:id="@+id/multiSpinnerInstruments"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/multiSpinnerInstrumentsProfile"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Instruments"
                     android:layout_weight="1" />
 
                 <!--
@@ -164,7 +176,7 @@
 
 
             <EditText
-                android:id="@+id/txtLocation"
+                android:id="@+id/user_biography"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginLeft="15dp"

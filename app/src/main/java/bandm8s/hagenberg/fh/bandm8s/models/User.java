@@ -1,6 +1,5 @@
 package bandm8s.hagenberg.fh.bandm8s.models;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
@@ -14,6 +13,10 @@ public class User {
     public String mEmail;
     public String mProfilePic;
     public boolean mIsBand;
+    public String mGenre;
+    public String mSkill;
+    public String mInstruments;
+    public String mBiography;
 
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -31,6 +34,19 @@ public class User {
         mProfilePic = profilePic;
         mIsBand = isBand;
     }
+
+
+
+
+    public User(String username, String genre, String skill, String instruments, String biography) {
+        mUsername = username;
+        mGenre = genre;
+        mSkill = skill;
+        mInstruments = instruments;
+        mBiography = biography;
+    }
+
+
 
     public String getmUsername() {
         return mUsername;
@@ -62,5 +78,37 @@ public class User {
 
     public void setmIsBand(boolean mIsBand) {
         this.mIsBand = mIsBand;
+    }
+
+    public String getmGenre() {
+        return mGenre;
+    }
+
+    public void setmGenre(String mGenre) {
+        this.mGenre = mGenre;
+    }
+
+    public String getmSkill() {
+        return mSkill;
+    }
+
+    public void setmSkill(String mSkill) {
+        this.mSkill = mSkill;
+    }
+
+    public String getmInstruments() {
+        return mInstruments;
+    }
+
+    public void setmInstruments(String mInstruments) {
+        this.mInstruments = mInstruments;
+    }
+
+    public String getmBiography() {
+        return mBiography;
+    }
+
+    public void setmBiography(String mBiography) {
+        this.mBiography = mBiography;
     }
 }
