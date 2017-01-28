@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import bandm8s.hagenberg.fh.bandm8s.EntryDetailActivity;
 import bandm8s.hagenberg.fh.bandm8s.R;
 import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 import bandm8s.hagenberg.fh.bandm8s.viewholder.EntryViewHolder;
@@ -77,11 +78,11 @@ public abstract class EntryListFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Toast.makeText(getActivity(), entryKey, Toast.LENGTH_LONG).show();
-                        /*
-                        Intent i = new Intent(getActivity(), EntryDetailActiviy.class);
-                        i.putExtra(EntryDetailActiviy.EXTRA_STORY_KEY, entryKey);
+
+                        Intent i = new Intent(getActivity(), EntryDetailActivity.class);
+                        i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
                         startActivity(i);
-                        */
+
                     }
                 });
 

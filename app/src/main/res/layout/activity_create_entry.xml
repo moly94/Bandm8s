@@ -10,7 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="bandm8s.hagenberg.fh.bandm8s.CreateEntryActivity">
 
-    <!-- lol -->
 
     <TableLayout
         android:layout_width="match_parent"
@@ -143,7 +142,8 @@
                 android:ems="10"
                 android:hint="Add Description here!"
                 android:id="@+id/txtDescription"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:scrollbars = "vertical"/>
 
         </TableRow>
     </TableLayout>

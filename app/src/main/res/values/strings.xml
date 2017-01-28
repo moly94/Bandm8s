@@ -49,4 +49,12 @@
     <!-- Strings related to Chat-->
     <string name="write_message">Your message</string>
 
+    <!-- Strings related to Entry Creation and Detail -->
+    <string name="entry_title">Title</string>
+    <string name="entry_location">Location</string>
+    <string name="entry_instruments">Instruments</string>
+    <string name="entry_genre">Genre</string>
+    <string name="entry_skill">Skill-Level</string>
+    <string name="entry_author">Author</string>
+
 </resources>
