@@ -32,8 +32,6 @@ import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class UserProfile extends AppCompatActivity {
 
-    private static final String TAG = UserProfile.class.getSimpleName();
-
     private MultiSelectionSpinner mGenres;
     private Spinner mSkill;
     private MultiSelectionSpinner mInstruments;
@@ -61,8 +59,32 @@ public class UserProfile extends AppCompatActivity {
         mFireBaseDataBase = FirebaseDatabase.getInstance();
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        startupProfile();
+
+        mSaveProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateUser();
+            }
+        });
+        mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mCurrentUser = dataSnapshot.getValue(User.class);
+                setProfile();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void startupProfile() {
         mUserName = (EditText) findViewById(R.id.user_profile_name);
-        mUserName.setFocusable(false);
         mUserName.clearFocus();
 
 
@@ -93,28 +115,7 @@ public class UserProfile extends AppCompatActivity {
             }
         });
         mSaveProfile = (ImageButton) findViewById(R.id.saveChangedData);
-        mSaveProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateUser();
-
-            }
-        });
-        mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                mCurrentUser = dataSnapshot.getValue(User.class);
-                setProfile();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -185,33 +186,38 @@ public class UserProfile extends AppCompatActivity {
 
         //set MultiSelectionSpinner Genres
         String genre = mCurrentUser.getmGenre();
-        String[] genres = genre.split(", ");
-        mGenres.setSelection(genres);
+        if (genre != null) {
+            String[] genres = genre.split(", ");
+            mGenres.setSelection(genres);
+        }
 
 
         String skill = mCurrentUser.getmSkill();
         int i = 0;
-        switch (skill) {
-            case "Beginner":
-                i = 0;
-                break;
-            case "Intermediate":
-                i = 1;
-                break;
-            case "Experienced":
-                i = 2;
-                break;
-            case "Professional":
-                i = 3;
-                break;
+        if (skill != null) {
+            switch (skill) {
+                case "Beginner":
+                    i = 0;
+                    break;
+                case "Intermediate":
+                    i = 1;
+                    break;
+                case "Experienced":
+                    i = 2;
+                    break;
+                case "Professional":
+                    i = 3;
+                    break;
+            }
+            mSkill.setSelection(i);
         }
-        mSkill.setSelection(i);
-
 
         //set MultiSelectionSpinner Instruments
         String instrument = mCurrentUser.getmInstruments();
-        String[] instruments = instrument.split(", ");
-        mInstruments.setSelection(instruments);
+        if (instrument != null) {
+            String[] instruments = instrument.split(", ");
+            mInstruments.setSelection(instruments);
+        }
 
         //set Biography of User
         mUserBiography.setText(mCurrentUser.getmBiography());
@@ -232,4 +238,3 @@ public class UserProfile extends AppCompatActivity {
 
     }
 }
-

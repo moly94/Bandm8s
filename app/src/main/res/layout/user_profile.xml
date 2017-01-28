@@ -35,6 +35,8 @@
             android:layout_below="@+id/header_cover_image"
             android:background="@color/colorPrimary"
             android:elevation="4dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
             android:paddingBottom="24dp">
             <ImageButton
                 android:id="@+id/saveChangedData"
@@ -58,6 +60,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
             <EditText
+
                 android:id="@+id/user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
