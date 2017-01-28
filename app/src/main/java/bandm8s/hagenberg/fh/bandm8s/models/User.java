@@ -38,12 +38,13 @@ public class User {
 
 
 
-    public User(String username, String genre, String skill, String instruments, String biography) {
+    public User(String username, String genre, String skill, String instruments, String biography, String email) {
         mUsername = username;
         mGenre = genre;
         mSkill = skill;
         mInstruments = instruments;
         mBiography = biography;
+        mEmail = email;
     }
 
 

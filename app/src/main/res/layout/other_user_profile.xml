@@ -14,6 +14,7 @@
             android:src="@drawable/bandpicture" />
 
 
+
         <ImageView
             android:id="@+id/user_profile_photo"
             android:layout_width="120dp"
@@ -33,44 +34,28 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/header_cover_image"
             android:background="@color/colorPrimary"
-            android:descendantFocusability="beforeDescendants"
             android:elevation="4dp"
+            android:descendantFocusability="beforeDescendants"
             android:focusableInTouchMode="true"
             android:paddingBottom="24dp">
 
             <ImageButton
-                android:id="@+id/saveChangedData"
+                android:id="@+id/startChat"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="35dp"
-                android:background="@null"
-                android:paddingBottom="24dp"
                 android:paddingTop="20dp"
-                android:src="@drawable/ic_menu_manage" />
-
-            <ImageButton
-                android:id="@+id/change_user_photo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:background="@null"
                 android:paddingBottom="24dp"
-                android:paddingTop="20dp"
-                android:src="@drawable/ic_menu_camera" />
-
-            <EditText
+                android:src="@drawable/ic_menu_send"
+                android:background="@null"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+            <TextView
                 android:id="@+id/user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="76dp"
-                android:background="@android:color/transparent"
-                android:inputType="text"
-                android:maxLines="1"
-                android:text="@string/profile_username"
+                android:text=""
                 android:textColor="#fff"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -85,7 +70,6 @@
             android:layout_below="@+id/profile_layout"
             android:layout_marginTop="5dp"
             android:orientation="vertical">
-
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -102,13 +86,12 @@
                     android:text="@string/profile_genre"
                     android:textSize="14sp" />
 
-                <bandm8s.hagenberg.fh.bandm8s.MultiSelectionSpinner
-                    android:id="@+id/multiSpinnerGenresProfile"
+                <TextView
+                    android:id="@+id/GenresString"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
             </TableRow>
-
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -124,13 +107,12 @@
                     android:layout_weight="1"
                     android:text="@string/profile_skill" />
 
-                <Spinner
-                    android:id="@+id/spinnerSkill"
+                <TextView
+                    android:id="@+id/SkillString"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
             </TableRow>
-
             <TableRow
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -140,15 +122,15 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/lblInstruments"
+                    android:text="@string/profile_instruments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/profile_instruments" />
+                    android:id="@+id/lblInstruments"
+                    android:layout_weight="1"/>
 
 
-                <bandm8s.hagenberg.fh.bandm8s.MultiSelectionSpinner
-                    android:id="@+id/multiSpinnerInstrumentsProfile"
+                <TextView
+                    android:id="@+id/InstrumentsString"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
@@ -185,7 +167,7 @@
             </TableRow>
 
 
-            <EditText
+            <TextView
                 android:id="@+id/user_biography"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
@@ -195,8 +177,6 @@
                 android:background="#fff"
                 android:ems="10"
                 android:gravity="top|left"
-                android:hint="@string/profile_biography_hint"
-                android:inputType="textMultiLine"
                 android:lines="25"
                 android:maxLines="25"
                 android:minLines="2"

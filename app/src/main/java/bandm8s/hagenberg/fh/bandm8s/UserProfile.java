@@ -42,6 +42,7 @@ public class UserProfile extends AppCompatActivity {
     private User mCurrentUser;
 
     private String mUserId = getUid();
+    private String mEMail;
     private EditText mUserName;
     private EditText mUserBiography;
 
@@ -87,10 +88,8 @@ public class UserProfile extends AppCompatActivity {
         mUserName = (EditText) findViewById(R.id.user_profile_name);
         mUserName.clearFocus();
 
-
         mGenres = (MultiSelectionSpinner) findViewById(R.id.multiSpinnerGenresProfile);
         mGenres.setItems(getResources().getStringArray(R.array.genres_array));
-
 
         mSkill = (Spinner) findViewById(R.id.spinnerSkill);
         ArrayAdapter<CharSequence> skillAdapter = ArrayAdapter.createFromResource(this,
@@ -225,12 +224,13 @@ public class UserProfile extends AppCompatActivity {
 
     private void updateUser() {
         String username = mUserName.getText().toString();
+        String eMail = mUser.getEmail();
         String genre = mGenres.getSelectedItem().toString();
         String skill = mSkill.getSelectedItem().toString();
         String instruments = mInstruments.getSelectedItemsAsString();
         String biography = mUserBiography.getText().toString();
 
-        User bandObject = new User(username, genre, skill, instruments, biography);
+        User bandObject = new User(username, genre, skill, instruments, biography, eMail);
         DatabaseReference myRef = mFireBaseDataBase.getReference("users");
         myRef.child(mUser.getUid()).setValue(bandObject);
         Toast.makeText(UserProfile.this, "UserProfile Successfully updated",
