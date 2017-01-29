@@ -25,7 +25,8 @@ public class User {
 
     //TODO: Change to own profile pic!!!
     public User(String username, String email, boolean isBand) {
-        this(username, email, "gs://project-cow.appshot.com/testProfile.png", isBand);
+        this(username, "Rock", "Beginner", "Guitar", "Nix", email, "gs://project-cow.appshot.com/testProfile.png", isBand);
+
     }
 
     public User(String username, String email, String profilePic, boolean isBand) {
@@ -45,6 +46,18 @@ public class User {
         mInstruments = instruments;
         mBiography = biography;
         mEmail = email;
+    }
+
+    public User(String username, String genre, String skill, String instruments, String biography,
+                String email, String profilePic, boolean isBand) {
+        mUsername = username;
+        mGenre = genre;
+        mSkill = skill;
+        mInstruments = instruments;
+        mBiography = biography;
+        mEmail = email;
+        mProfilePic = profilePic;
+        mIsBand = isBand;
     }
 
 

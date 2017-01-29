@@ -12,10 +12,10 @@ import java.util.Map;
  */
 
 public class Chat {
-    public String uid;
-    public String author;
-    public String title;
-    public String description;
+    public String mUid;
+    public String mOpponent;
+    public String mTitle;
+    public String mDescription;
     public boolean friendsOnly;
 
     public int starCount = 0;
@@ -28,18 +28,18 @@ public class Chat {
 
 
     /**
-     * @param userId  the unique ID of the author of this story
-     * @param auth    Username of the author
-     * @param t       title of this story
-     * @param b       short description of the content
+     * @param userId  the unique ID of the mOpponent of this story
+     * @param auth    Username of the mOpponent
+     * @param t       mTitle of this story
+     * @param b       short mDescription of the content
      * @param tagList some metatags
      * @param fOnly   is story public or friends-only?
      */
     public Chat(String userId, String auth, String t, String b, List<String> tagList, boolean fOnly) {
-        uid = userId;
-        author = auth;
-        title = t;
-        description = b;
+        mUid = userId;
+        mOpponent = auth;
+        mTitle = t;
+        mDescription = b;
         tags = (ArrayList<String>) tagList;
         friendsOnly = fOnly;
 
@@ -51,10 +51,10 @@ public class Chat {
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("uid", uid);
-        result.put("author", author);
-        result.put("title", title);
-        result.put("description", description);
+        result.put("mUid", mUid);
+        result.put("mOpponent", mOpponent);
+        result.put("mTitle", mTitle);
+        result.put("mDescription", mDescription);
         result.put("starCount", starCount);
         result.put("stars", stars);
         result.put("friendsonly", friendsOnly);

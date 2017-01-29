@@ -88,13 +88,16 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
        super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_chat);
 
+       //TODO: RE-Write after finished Beitrag
 
        // Get post key from intent
+       /*
        mChatKey = getIntent().getStringExtra(EXTRA_CHAT_KEY);
        if (mChatKey == null) {
            throw new IllegalArgumentException("Must pass EXTRA_STRING_KEY");
-       }
+       }*/
 
+       mChatKey="UppEhGpzbcaju3yjOhNnBmrezOY2";
        // Initialize Database
        mChatReference = FirebaseDatabase.getInstance().getReference()
                .child("stories").child(mChatKey);
@@ -105,16 +108,12 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                child("user-starred-stories").child(getUid()).child(mChatKey);
 
        //Init View
-       /*mOpponentView = (TextView) findViewById(R.id.chat_author);
-       mDescriptionView = (TextView) findViewById(R.id.chat_description);
-       mTitleView = (TextView) findViewById(R.id.chat_title);
+       mOpponentView = (TextView) findViewById(R.id.chat_opponent);
        mStarNumView = (TextView) findViewById(R.id.chat_detail_num_stars);
-       mStarView = (ImageView) findViewById(R.id.stars_detail);
-       mChatAuthorPicView = (ImageView) findViewById(R.id.chat_author_profile_pic);
        mMessageField = (EditText) findViewById(R.id.field_comment_text);
 
        mMessageButton = (Button) findViewById(R.id.button_contribute);
-       mMessagesRecycler = (RecyclerView) findViewById(R.id.recycler_comments);*/
+       mMessagesRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
 
 
        mStarView.setOnClickListener(new View.OnClickListener() {
@@ -165,15 +164,15 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                // Get Post object and use the values to update the UI
                mChat = dataSnapshot.getValue(Chat.class);
                mUserChatReference = FirebaseDatabase.getInstance().getReference()
-                       .child("user-stories").child(mChat.uid).child(mChatKey);
+                       .child("user-stories").child(mChat.mUid).child(mChatKey);
                // [START_EXCLUDE]
-               mOpponentView.setText(mChat.author);
-               mTitleView.setText(mChat.title);
-               mDescriptionView.setText(mChat.description);
+               mOpponentView.setText(mChat.mOpponent);
+               mTitleView.setText(mChat.mTitle);
+               mDescriptionView.setText(mChat.mDescription);
 
 
                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
-               Query searchForUserPic = myRef.child(mChat.uid).child("profilePic");
+               Query searchForUserPic = myRef.child(mChat.mUid).child("profilePic");
                searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
                    @Override
                    public void onDataChange(DataSnapshot dataSnapshot) {

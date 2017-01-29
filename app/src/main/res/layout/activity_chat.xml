@@ -10,7 +10,7 @@
     tools:context="bandm8s.hagenberg.fh.bandm8s.ChatActivity">
 
     <include
-        android:id="@+id/chat_opposite"
+        android:id="@+id/chat_opponent"
         layout="@layout/include_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,15 +21,15 @@
         android:id="@+id/star_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/chat_opposite"
+        android:layout_alignBottom="@+id/chat_opponent"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/chat_opposite"
+        android:layout_alignTop="@+id/chat_opponent"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
 
         <TextView
-            android:id="@+id/story_detail_num_stars"
+            android:id="@+id/chat_detail_num_stars"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -41,8 +41,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/story_contribution_form"
-        android:id="@+id/detail_story_contributions"
+        android:layout_above="@+id/chat_message_form"
+        android:id="@+id/detail_chat_messages"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
         >
@@ -59,7 +59,7 @@
         </GridLayout>
     </ScrollView>
     <LinearLayout
-        android:id="@+id/story_contribution_form"
+        android:id="@+id/chat_message_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
