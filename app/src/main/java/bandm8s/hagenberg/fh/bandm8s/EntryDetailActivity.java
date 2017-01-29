@@ -3,13 +3,19 @@ package bandm8s.hagenberg.fh.bandm8s;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class EntryDetailActivity extends AppCompatActivity {
@@ -23,6 +29,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     private String mUserId = getUid();
 
     private User mCurrentUser;
+    private Entry mCurrentEntry;
     private String mEntryKey;
 
     //Database Reference
@@ -73,6 +80,57 @@ public class EntryDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        mEntryReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mCurrentEntry = dataSnapshot.getValue(Entry.class);
+                Log.d(TAG, mCurrentEntry.getmAuthor() + mCurrentEntry.getmGenre() + mCurrentEntry.getmLocation());
+                mAuthor.setText(mCurrentEntry.getmAuthor());
+                mTitle.setText(mCurrentEntry.getmTitle());
+                mGenre.setText(mCurrentEntry.getmGenre());
+                mSkill.setText(mCurrentEntry.getmSkill());
+                mLocation.setText(mCurrentEntry.getmLocation());
+                mInstruments.setText(mCurrentEntry.getmInstruments());
+                mDescription.setText(mCurrentEntry.getmDescription());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_detail_entry_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_startChat) {
+            //Start chat behaviour
+        }
+
+        else if (id == R.id.action_showProfile) {
+            //Start show Profile behaviour
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     static String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();

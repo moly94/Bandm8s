@@ -8,6 +8,8 @@
     <string name="action_settings">Settings</string>
     <string name="action_confirm">Confirm</string>
     <string name="saveChangedDataInProfile">saveData</string>
+    <string name="action_startChat">Chat</string>
+    <string name="action_showProfile">Profile</string>
 
 
     <!-- Strings related to login -->
