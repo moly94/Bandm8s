@@ -1,5 +1,6 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -123,6 +124,9 @@ public class EntryDetailActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_startChat) {
             //Start chat behaviour
+            Intent i = new Intent(getApplicationContext(), ChatActivity.class);
+            i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
+            startActivity(i);
         }
 
         else if (id == R.id.action_showProfile) {
