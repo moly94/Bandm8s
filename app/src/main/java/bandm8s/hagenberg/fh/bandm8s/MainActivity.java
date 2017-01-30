@@ -22,21 +22,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import bandm8s.hagenberg.fh.bandm8s.fragments.BandEntriesFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.EntryListFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.UserEntriesFragment;
-import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -45,8 +38,6 @@ public class MainActivity extends BaseActivity
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-
-
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -71,7 +62,6 @@ public class MainActivity extends BaseActivity
         });
 
         mAuth = FirebaseAuth.getInstance();
-
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
