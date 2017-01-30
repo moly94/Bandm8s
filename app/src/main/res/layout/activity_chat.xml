@@ -10,42 +10,40 @@
     tools:context="bandm8s.hagenberg.fh.bandm8s.ChatActivity">
 
     <include
-        android:id="@+id/chat_opponent"
-        layout="@layout/include_user"
+        android:id="@+id/chat_opponent_layout"
+        layout="@layout/include_chat_opponent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true" />
-
 
     <LinearLayout
         android:id="@+id/star_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/chat_opponent"
+        android:layout_alignBottom="@+id/chat_opponent_layout"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/chat_opponent"
+        android:layout_alignTop="@+id/chat_opponent_layout"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"/>
 
-
-        <TextView
-            android:id="@+id/chat_detail_num_stars"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            tools:text="7" />
-
-    </LinearLayout>
-
+    <include
+        android:id="@+id/post_text_layout"
+        layout="@layout/include_chat_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/chat_opponent_layout"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/chat_message_form"
         android:id="@+id/detail_chat_messages"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        >
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -58,6 +56,10 @@
                 tools:listitem="@layout/item_message" />
         </GridLayout>
     </ScrollView>
+
+
+
+
     <LinearLayout
         android:id="@+id/chat_message_form"
         android:layout_width="match_parent"

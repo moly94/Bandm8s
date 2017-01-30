@@ -12,6 +12,8 @@ import java.util.Map;
 public class Message {
     public String author;
     public String uid;
+    public String opponentId;
+    public String opponentName;
     public String text;
     public int upvoteCount = 0;
 
@@ -20,9 +22,11 @@ public class Message {
 
     }
 
-    public Message(String author, String uid, String text) {
+    public Message(String author, String uid, String oid, String oName, String text) {
         this.author = author;
         this.uid = uid;
+        this.opponentId=oid;
+        this.opponentName=oName;
         this.text = text;
     }
 }

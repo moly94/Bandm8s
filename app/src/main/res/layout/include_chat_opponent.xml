@@ -7,13 +7,13 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/chat_author_profile_pic"
+        android:id="@+id/chat_opponent_profile_pic"
         android:src="@android:drawable/ic_menu_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <TextView
-        android:id="@+id/chat_author"
+        android:id="@+id/chat_opponent"
         style="@style/Base.TextAppearance.AppCompat.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
