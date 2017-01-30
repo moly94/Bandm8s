@@ -50,7 +50,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
             <TextView
-                android:id="@+id/user_profile_name"
+                android:id="@+id/other_user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -79,7 +79,7 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/user_profile_short_bio"
+                    android:id="@+id/other_user_profile_genre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

@@ -42,7 +42,6 @@ public class UserProfile extends AppCompatActivity {
     private User mCurrentUser;
 
     private String mUserId = getUid();
-    private String mEMail;
     private EditText mUserName;
     private EditText mUserBiography;
 

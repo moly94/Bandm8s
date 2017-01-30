@@ -56,10 +56,8 @@ public class EntryDetailActivity extends AppCompatActivity {
         mEntryKey = getIntent().getStringExtra(EXTRA_ENTRY_KEY);
         if (mEntryKey == null) {
             throw new IllegalArgumentException("Must pass EXTRA_STRING_KEY");
-        }
-
-        else {
-            Log.d(TAG, "Given Entry Key: " +  mEntryKey);
+        } else {
+            Log.d(TAG, "Given Entry Key: " + mEntryKey);
         }
 
         //  initialize_database_ref
@@ -76,7 +74,6 @@ public class EntryDetailActivity extends AppCompatActivity {
         mLocation = (TextView) findViewById(R.id.lblLocationContent_detail);
         mInstruments = (TextView) findViewById(R.id.lblInstrumentsContent_detail);
         mDescription = (TextView) findViewById(R.id.lblDescription_detail);
-
 
 
     }
@@ -127,10 +124,10 @@ public class EntryDetailActivity extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(), ChatActivity.class);
             i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
             startActivity(i);
-        }
-
-        else if (id == R.id.action_showProfile) {
-            //Start show Profile behaviour
+        } else if (id == R.id.action_showProfile) {
+            Intent i = new Intent(this, OtherUserProfile.class);
+            i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

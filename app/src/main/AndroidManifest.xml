@@ -57,6 +57,8 @@
         <activity
             android:name=".UserProfile"
             android:label="@string/title_activity_profile" />
+        <activity android:name=".OtherUserProfile"
+            android:label="@string/title_activity_other_profile"/>
         <activity
             android:name=".ChatActivity"
             android:label="Chat"

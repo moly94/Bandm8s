@@ -41,6 +41,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_profile">User Profile</string>
+    <string name="title_activity_other_profile">Other User Profile</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_login">Login</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
