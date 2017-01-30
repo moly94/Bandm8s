@@ -19,6 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 import bandm8s.hagenberg.fh.bandm8s.models.User;
 
+import static bandm8s.hagenberg.fh.bandm8s.OtherUserProfile.EXTRA_USER_KEY;
+
 public class EntryDetailActivity extends AppCompatActivity {
 
     //stores the UID of the story passed by the MainActivity
@@ -126,7 +128,7 @@ public class EntryDetailActivity extends AppCompatActivity {
             startActivity(i);
         } else if (id == R.id.action_showProfile) {
             Intent i = new Intent(this, OtherUserProfile.class);
-            i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
+            i.putExtra(EXTRA_USER_KEY, mCurrentEntry.getmUid());
             startActivity(i);
         }
 

@@ -20,7 +20,7 @@ import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 public class OtherUserProfile extends AppCompatActivity {
 
-    public static final String EXTRA_ENTRY_KEY = "entry_key";
+    public static final String EXTRA_USER_KEY = "user_key";
 
     private DatabaseReference mDataBase;
     private FirebaseDatabase mFireBaseDataBase;
@@ -43,9 +43,7 @@ public class OtherUserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.other_user_profile);
         Intent intent = getIntent();
-        mUserID = intent.getExtras().getString(EXTRA_ENTRY_KEY);
-        // Todo: delete this line, just for test purpose
-        mUserID = "qf59rQ6RRXR85queD8NM135B1Mt2";
+        mUserID = intent.getExtras().getString(EXTRA_USER_KEY);
         mFireBaseDataBase = FirebaseDatabase.getInstance();
         mDataBase = FirebaseDatabase.getInstance().getReference();
 
