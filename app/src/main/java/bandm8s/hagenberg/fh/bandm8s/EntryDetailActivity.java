@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -96,7 +97,6 @@ public class EntryDetailActivity extends AppCompatActivity {
                 mLocation.setText(mCurrentEntry.getmLocation());
                 mInstruments.setText(mCurrentEntry.getmInstruments());
                 mDescription.setText(mCurrentEntry.getmDescription());
-
             }
 
             @Override
@@ -110,6 +110,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_detail_entry_menu, menu);
+
         return true;
     }
 
@@ -123,9 +124,16 @@ public class EntryDetailActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_startChat) {
             //Start chat behaviour
-            Intent i = new Intent(getApplicationContext(), ChatActivity.class);
-            i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
-            startActivity(i);
+            if(mUserId.equals(mCurrentEntry.getmUid())) {
+                Toast.makeText(getApplicationContext(), "You can't start a chat with yourself!",
+                        Toast.LENGTH_LONG).show();
+
+            }
+            else {
+                Intent i = new Intent(getApplicationContext(), ChatActivity.class);
+                i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
+                startActivity(i);
+            }
         } else if (id == R.id.action_showProfile) {
             Intent i = new Intent(this, OtherUserProfile.class);
             i.putExtra(EXTRA_USER_KEY, mCurrentEntry.getmUid());

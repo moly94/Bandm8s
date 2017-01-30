@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,6 +44,8 @@ public class CreateEntryActivity extends AppCompatActivity {
     private Spinner mSkill;
     private MultiSelectionSpinner mInstruments;
     private EditText mTitle, mLocation, mDescription;
+
+    private TextView mlblInstruments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +82,21 @@ public class CreateEntryActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mCurrentUser = dataSnapshot.getValue(User.class);
+                mlblInstruments = (TextView) findViewById(R.id.lblInstruments);
 
                 Log.d(TAG, "User name: " + mCurrentUser.getmUsername() + ", email " + mCurrentUser.getmEmail());
                 if (mCurrentUser.ismIsBand()) {
                     Log.d(TAG, "User is a band!");
+                    mlblInstruments.append(" (we need)");
+
                 }
-                else
+                else {
                     Log.d(TAG, "User is NOT a band!");
+                    mlblInstruments.append(" (I play)");
+                }
+
+
+
             }
 
             @Override
@@ -93,6 +104,8 @@ public class CreateEntryActivity extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 
