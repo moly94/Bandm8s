@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
     private static DatabaseReference mUserChatReference;
     private DatabaseReference mUserStarredReference;
     private static DatabaseReference mMessageReference;
+    private static DatabaseReference mEntryReference;
     private ValueEventListener mChatListener;
     private DatabaseReference mDatabaseReference;
     private String mChatKey;
@@ -105,10 +107,12 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
         // Initialize Database
         mChatReference = FirebaseDatabase.getInstance().getReference()
-                .child("chats").child(mChatKey);
+                .child("entries").child(mChatKey);
 
         mMessageReference = FirebaseDatabase.getInstance().getReference()
                 .child("messages").child(mChatKey);
+
+
 
         //Init View
         mOpponentView = (TextView) findViewById(R.id.chat_opponent);
@@ -252,6 +256,12 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
                                 //push comment
                                 mMessageReference.push().setValue(message);
+                                String key = mDatabaseReference.child("user-chats").child(mMessageReference.getKey()).getKey();
+                                Map<String, Object> entryValues = entry.toMap();
+
+                                Map<String, Object> childUpdates = new HashMap<>();
+                                childUpdates.put("/user-chats/"+uid+"/" + key, entryValues);
+                                mDatabaseReference.updateChildren(childUpdates);
 
                                 //clear field
                                 mMessageField.setText(null);
@@ -290,6 +300,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
         private Context mContext;
         private DatabaseReference mDatabaseReference;
+        private DatabaseReference mEntryReference;
         private ChildEventListener mChildEventListener;
 
         private List<String> mMessageIds = new ArrayList<>();
@@ -299,6 +310,11 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
             this.mContext = context;
             this.mDatabaseReference = ref;
 
+            loadMessages(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        }
+
+        public void loadMessages(final String messageKey){
             // Create child event listener
             // [START child_event_listener_recycler]
             ChildEventListener childEventListener = new ChildEventListener() {
@@ -309,22 +325,29 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                     // A new comment has been added, add it to the displayed list
                     Message message = dataSnapshot.getValue(Message.class);
 
+                    if(message.opponentId.equals(messageKey)||message.uid.equals(messageKey)) {
 
-                    // [START_EXCLUDE]
-                    // Update RecyclerView
-                    mMessageIds.add(dataSnapshot.getKey());
-                    mMessages.add(message);
-                    notifyItemInserted(mMessages.size() - 1);
-                    // [END_EXCLUDE]
+                        // [START_EXCLUDE]
+                        // Update RecyclerView
+                        mMessageIds.add(dataSnapshot.getKey());
+                        mMessages.add(message);
+                        notifyItemInserted(mMessages.size() - 1);
+                        // [END_EXCLUDE]
+                    }
+
                 }
 
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
 
-                    // A comment has changed, use the key to determine if we are displaying this
-                    // comment and if so displayed the changed comment.
-                    Message newMessage = dataSnapshot.getValue(Message.class);
+
+                // A comment has changed, use the key to determine if we are displaying this
+                // comment and if so displayed the changed comment.
+                Message newMessage = dataSnapshot.getValue(Message.class);
+
+                if(newMessage.opponentId.equals(messageKey)||newMessage.uid.equals(messageKey)) {
+
                     String messageKey = dataSnapshot.getKey();
 
                     // [START_EXCLUDE]
@@ -341,52 +364,53 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                     }
                     // [END_EXCLUDE]
                 }
+            }
 
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-                    Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
 
-                    // A comment has changed, use the key to determine if we are displaying this
-                    // comment and if so remove it.
-                    String messageKey = dataSnapshot.getKey();
+                // A comment has changed, use the key to determine if we are displaying this
+                // comment and if so remove it.
+                String messageKey = dataSnapshot.getKey();
 
-                    // [START_EXCLUDE]
-                    int messageIndex = mMessageIds.indexOf(messageKey);
-                    if (messageIndex > -1) {
+                // [START_EXCLUDE]
+                int messageIndex = mMessageIds.indexOf(messageKey);
+                if (messageIndex > -1) {
 
-                        //enable commentButton if comment is not from the user
-                        if ((messageIndex == mMessageIds.size() - 1) && mMessages.get(messageIndex).uid.equals(getUid()))
-                            mMessageButton.setEnabled(true);
+                    //enable commentButton if comment is not from the user
+                    if ((messageIndex == mMessageIds.size() - 1) && mMessages.get(messageIndex).uid.equals(getUid()))
+                        mMessageButton.setEnabled(true);
 
-                        // Remove data from the list
-                        mMessageIds.remove(messageIndex);
-                        mMessages.remove(messageIndex);
+                    // Remove data from the list
+                    mMessageIds.remove(messageIndex);
+                    mMessages.remove(messageIndex);
 
-                        // Update the RecyclerView
-                        notifyItemRemoved(messageIndex);
-                    } else {
-                        Log.w(TAG, "onChildRemoved:unknown_child:" + messageKey);
-                    }
-                    // [END_EXCLUDE]
+                    // Update the RecyclerView
+                    notifyItemRemoved(messageIndex);
+                } else {
+                    Log.w(TAG, "onChildRemoved:unknown_child:" + messageKey);
                 }
+                // [END_EXCLUDE]
+            }
 
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-                    //TODO:moving Comments needed?
-                }
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                //TODO:moving Comments needed?
+            }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.w(TAG, "postComments:onCancelled", databaseError.toException());
-                    Toast.makeText(mContext, "Failed to load comments.",
-                            Toast.LENGTH_SHORT).show();
-                }
-            };
-            ref.addChildEventListener(childEventListener);
-            // [END child_event_listener_recycler]
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "postComments:onCancelled", databaseError.toException());
+                Toast.makeText(mContext, "Failed to load comments.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+        mDatabaseReference.addChildEventListener(childEventListener);
+        // [END child_event_listener_recycler]
 
-            // Store reference to listener so it can be removed on app stop
-            mChildEventListener = childEventListener;
+        // Store reference to listener so it can be removed on app stop
+        mChildEventListener = childEventListener;
         }
 
         @Override
