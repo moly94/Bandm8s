@@ -6,19 +6,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import bandm8s.hagenberg.fh.bandm8s.ChatActivity;
 import bandm8s.hagenberg.fh.bandm8s.EntryDetailActivity;
 import bandm8s.hagenberg.fh.bandm8s.R;
 import bandm8s.hagenberg.fh.bandm8s.models.Entry;
@@ -79,9 +85,38 @@ public abstract class EntryListFragment extends Fragment {
                     public void onClick(View view) {
                         //Toast.makeText(getActivity(), entryKey, Toast.LENGTH_LONG).show();
 
-                        Intent i = new Intent(getActivity(), EntryDetailActivity.class);
-                        i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
-                        startActivity(i);
+                        Fragment f = getFragmentManager().findFragmentById(R.id.pager);
+
+                        if (f instanceof ChatEntriesFragment){
+
+                            entryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Entry e = dataSnapshot.getValue(Entry.class);
+                                    if(e.getmUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                        Toast.makeText(EntryListFragment.this.getContext(), "You can't start a chat with yourself!",
+                                                Toast.LENGTH_LONG).show();
+                                        //TODO: Add new Activity with Chat-Choser for own Posts
+
+                                    } else {
+                                        Intent i = new Intent(getActivity(), ChatActivity.class);
+                                        i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
+                                        startActivity(i);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                        else {
+                            Intent i = new Intent(getActivity(), EntryDetailActivity.class);
+                            i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
+                            startActivity(i);
+                        }
 
                     }
                 });
