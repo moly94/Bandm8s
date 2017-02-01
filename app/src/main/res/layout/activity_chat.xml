@@ -16,16 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true" />
 
-    <LinearLayout
-        android:id="@+id/star_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/chat_opponent_layout"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/chat_opponent_layout"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"/>
-
     <include
         android:id="@+id/post_text_layout"
         layout="@layout/include_chat_text"
@@ -39,26 +29,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:id="@+id/detail_chat_messages"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_above="@+id/post_text_layout"
+        android:layout_below="@+id/chat_message_form">
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_comments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:listitem="@layout/item_message" />
-        </GridLayout>
     </ScrollView>
-
-
-
 
     <LinearLayout
         android:id="@+id/chat_message_form"
@@ -88,5 +64,14 @@
             android:text="Post" />
 
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_comments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_message"
+        android:layout_above="@id/chat_message_form"
+        android:layout_below="@+id/post_text_layout" />
+
 
 </RelativeLayout>

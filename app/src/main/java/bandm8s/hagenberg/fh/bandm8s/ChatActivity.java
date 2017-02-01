@@ -12,7 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -132,22 +134,10 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
             }
         });
 
-        final GridLayoutManager manager = new GridLayoutManager(this, 6);
-        final int multiplier = 6;
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                int length = mAdapter.mMessages.get(position).text.length();
-                if (length < multiplier)
-                    return 1;
-                else if (length > multiplier * manager.getSpanCount())
-                    return manager.getSpanCount();
-                else
-                    return (mAdapter.mMessages.get(position).text.length() / multiplier);
-            }
-        });
-
-        mMessagesRecycler.setLayoutManager(manager);
+        RecyclerView.LayoutManager mLayout = new LinearLayoutManager(getApplicationContext());
+        mMessagesRecycler.setLayoutManager(mLayout);
+        mMessagesRecycler.setItemAnimator(new DefaultItemAnimator());
+        mMessagesRecycler.setAdapter(mAdapter);
 
     }
 
@@ -211,6 +201,10 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         // Listen for comments
         mAdapter = new MessageAdapter(this, mMessageReference);
         mMessagesRecycler.setAdapter(mAdapter);
+
+        ViewGroup.LayoutParams params=mMessagesRecycler.getLayoutParams();
+        params.height=43;
+        mMessagesRecycler.setLayoutParams(params);
     }
 
 
@@ -332,6 +326,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                         mMessageIds.add(dataSnapshot.getKey());
                         mMessages.add(message);
                         notifyItemInserted(mMessages.size() - 1);
+                        //notifyDataSetChanged();
                         // [END_EXCLUDE]
                     }
 
@@ -423,7 +418,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         @Override
         public void onBindViewHolder(CommentViewHolder holder, final int position) {
             final Message message = mMessages.get(position);
-            holder.messageText.setText(message.text);
+            holder.messageText.setText(message.author+": "+message.text);
 
         }
 
