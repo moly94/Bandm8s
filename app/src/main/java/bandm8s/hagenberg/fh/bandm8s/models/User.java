@@ -39,17 +39,17 @@ public class User {
 
 
 
-    public User(String username, String genre, String skill, String instruments, String biography, String email) {
+    public User(String username, String genre, String skill, String instruments, String biography, String email, String profilePic) {
         mUsername = username;
         mGenre = genre;
         mSkill = skill;
         mInstruments = instruments;
         mBiography = biography;
         mEmail = email;
+        mProfilePic = profilePic;
     }
 
-    public User(String username, String genre, String skill, String instruments, String biography,
-                String email, String profilePic, boolean isBand) {
+    public User(String username, String genre, String skill, String instruments, String biography, String email, String profilePic, boolean isBand) {
         mUsername = username;
         mGenre = genre;
         mSkill = skill;

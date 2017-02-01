@@ -2,13 +2,19 @@ package bandm8s.hagenberg.fh.bandm8s;
 
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,10 +33,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+
 import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 
 public class UserProfile extends AppCompatActivity {
+
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+
 
     private MultiSelectionSpinner mGenres;
     private Spinner mSkill;
@@ -49,7 +60,15 @@ public class UserProfile extends AppCompatActivity {
     private ImageButton mChangeProfilePicture;
     private ImageButton mSaveProfile;
     private ImageView mProfilePicture;
+
+
     private static final int SELECT_PICTURE = 0;
+
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
 
 
     @Override
@@ -61,7 +80,6 @@ public class UserProfile extends AppCompatActivity {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         startupProfile();
-
         mSaveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +99,7 @@ public class UserProfile extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void startupProfile() {
@@ -109,10 +128,11 @@ public class UserProfile extends AppCompatActivity {
                 Intent imgIntent = new Intent();
                 imgIntent.setType("image/*");
                 imgIntent.setAction(Intent.ACTION_GET_CONTENT);
-                //startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
+                startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
             }
         });
         mSaveProfile = (ImageButton) findViewById(R.id.saveChangedData);
+
     }
 
     @Override
@@ -123,15 +143,62 @@ public class UserProfile extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+            }
+        }
+    }
+
+    @Override
     //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab oder macht nichts
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+            // Here, thisActivity is the current activity
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            }
             Bitmap bitmap = getPath(data.getData());
-            mProfilePicture.setImageBitmap(bitmap);
+            getCroppedBitmap(bitmap);
+            //mProfilePicture.setImageBitmap(bitmap);
         }
     }
+
+    public void getCroppedBitmap(Bitmap bitmap) {
+
+
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+
+        //roundedBitmapDrawable.setCornerRadius(100.0f);
+        roundedBitmapDrawable.setCircular(true);
+        roundedBitmapDrawable.setAntiAlias(true);
+        mProfilePicture.setImageDrawable(roundedBitmapDrawable);
+    }
+
 
     //Picaso https://github.com/square/picasso7
     private Bitmap getPath(Uri uri) {
@@ -142,6 +209,7 @@ public class UserProfile extends AppCompatActivity {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         String filePath = cursor.getString(column_index);
+        //mProfilePicture.setImageBitmap(BitmapFactory.decodeFile(filePath));
         cursor.close();
         // Convert file path into bitmap image using below line.
         Bitmap bitmap = BitmapFactory.decodeFile(filePath);
@@ -189,7 +257,6 @@ public class UserProfile extends AppCompatActivity {
             mGenres.setSelection(genres);
         }
 
-
         String skill = mCurrentUser.getmSkill();
         int i = 0;
         if (skill != null) {
@@ -210,6 +277,12 @@ public class UserProfile extends AppCompatActivity {
             mSkill.setSelection(i);
         }
 
+        //get Profile Picture from User
+        String profilePic = mCurrentUser.getmProfilePic();
+        byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        getCroppedBitmap(decodedByte);
+
         //set MultiSelectionSpinner Instruments
         String instrument = mCurrentUser.getmInstruments();
         if (instrument != null) {
@@ -229,11 +302,25 @@ public class UserProfile extends AppCompatActivity {
         String instruments = mInstruments.getSelectedItemsAsString();
         String biography = mUserBiography.getText().toString();
 
-        User bandObject = new User(username, genre, skill, instruments, biography, eMail);
+        mProfilePicture.buildDrawingCache();
+        Bitmap bitmap = mProfilePicture.getDrawingCache();
+        String profilePicture = getEncoded64ImageStringFromBitmap(bitmap);
+
+
+        User bandObject = new User(username, genre, skill, instruments, biography, eMail, profilePicture);
         DatabaseReference myRef = mFireBaseDataBase.getReference("users");
         myRef.child(mUser.getUid()).setValue(bandObject);
         Toast.makeText(UserProfile.this, "UserProfile Successfully updated",
                 Toast.LENGTH_LONG).show();
 
+    }
+
+    public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+        byte[] byteFormat = stream.toByteArray();
+        // get the base 64 string
+        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+        return imgString;
     }
 }
