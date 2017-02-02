@@ -1,16 +1,44 @@
 package bandm8s.hagenberg.fh.bandm8s.viewholder;
 
 
+import android.annotation.TargetApi;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import bandm8s.hagenberg.fh.bandm8s.BaseActivity;
 import bandm8s.hagenberg.fh.bandm8s.R;
 import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 
-public class EntryViewHolder extends RecyclerView.ViewHolder{
+public class EntryViewHolder extends RecyclerView.ViewHolder {
 
     //UI
     private TextView mTitleView;
@@ -35,7 +63,47 @@ public class EntryViewHolder extends RecyclerView.ViewHolder{
         mGenreView.setText(entry.getmGenre());
         mLocationView.setText(entry.getmLocation());
 
-        /// TODO: 26.01.2017 add profile picture
+
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+
+        DatabaseReference myRef = mDatabase.getReference("users");
+        Query searchForUserPic = myRef.child(entry.getmUid()).child("mProfilePic");
+        searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if(dataSnapshot.getValue() != null) {
+                    String profilePic = dataSnapshot.getValue().toString();
+                    Log.d("LUL", "Profilepic: " + profilePic);
+
+                    byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                    getCroppedBitmap(decodedByte);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
+
+
+    private void getCroppedBitmap(Bitmap bitmap) {
+
+
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), bitmap);
+
+        //roundedBitmapDrawable.setCornerRadius(20.0f);
+        roundedBitmapDrawable.setCircular(true);
+        roundedBitmapDrawable.setAntiAlias(true);
+        mProfileView.setImageDrawable(roundedBitmapDrawable);
+    }
+
+
+
 }

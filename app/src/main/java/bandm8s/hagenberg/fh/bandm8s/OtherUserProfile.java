@@ -1,8 +1,15 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -13,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import bandm8s.hagenberg.fh.bandm8s.models.User;
@@ -68,6 +76,30 @@ public class OtherUserProfile extends AppCompatActivity {
                 mSkill.setText(mCurrentUser.getmSkill());
                 mInstruments.setText(mCurrentUser.getmInstruments());
                 mUserBiography.setText(mCurrentUser.getmBiography());
+
+                Query searchForUserPic = mDataBase.child("users").child(mUserID).child("mProfilePic");
+                searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        if(dataSnapshot.getValue() != null) {
+                            String profilePic = dataSnapshot.getValue().toString();
+                            Log.d("LUL", "Profilepic: " + profilePic);
+
+                            byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                            getCroppedBitmap(decodedByte);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -108,5 +140,16 @@ public class OtherUserProfile extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getCroppedBitmap(Bitmap bitmap) {
+
+
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(Resources.getSystem(), bitmap);
+
+        //roundedBitmapDrawable.setCornerRadius(20.0f);
+        roundedBitmapDrawable.setCircular(true);
+        roundedBitmapDrawable.setAntiAlias(true);
+        mProfilePicture.setImageDrawable(roundedBitmapDrawable);
     }
 }
