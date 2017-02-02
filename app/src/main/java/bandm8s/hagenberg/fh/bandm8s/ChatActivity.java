@@ -255,6 +255,8 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
                                 Map<String, Object> childUpdates = new HashMap<>();
                                 childUpdates.put("/user-chats/"+uid+"/" + key, entryValues);
+                                childUpdates.put("/user-chats-passive/"+entry.getmUid()+"/"+uid+"/"+key, entryValues);
+                                //mDatabaseReference.child("user-chats-passive").child(entry.getmUid()).push().child(key).setValue(entryValues);
                                 mDatabaseReference.updateChildren(childUpdates);
 
                                 //clear field

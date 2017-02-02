@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import bandm8s.hagenberg.fh.bandm8s.fragments.BandEntriesFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.ChatEntriesFragment;
+import bandm8s.hagenberg.fh.bandm8s.fragments.ChatEntriesPassiveFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.EntryListFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.UserEntriesFragment;
 
@@ -91,13 +92,15 @@ public class MainActivity extends BaseActivity
             private final Fragment[] mFragments = new Fragment[]{
                     new BandEntriesFragment(),
                     new UserEntriesFragment(),
-                    new ChatEntriesFragment()
+                    new ChatEntriesFragment(),
+                    new ChatEntriesPassiveFragment()
             };
 
             private final String[] mFragmentNames = new String[]{
                     "MusicianFinder",
                     "BandFinder",
-                    "Chats"
+                    "Chats",
+                    "Chats-Passive"
             };
 
             @Override
