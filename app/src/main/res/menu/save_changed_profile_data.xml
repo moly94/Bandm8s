@@ -5,6 +5,6 @@
         android:id="@+id/saveChangedData"
         android:title="@string/saveChangedDataInProfile"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_manage"/>
+        android:icon="@drawable/ic_menu_saver"/>
 
 </menu>

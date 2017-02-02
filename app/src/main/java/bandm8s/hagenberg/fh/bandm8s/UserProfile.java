@@ -152,6 +152,11 @@ public class UserProfile extends AppCompatActivity {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
+                    mChangeProfilePicture.setVisibility(View.INVISIBLE);
+//                    String profilePic = mCurrentUser.getmProfilePic();
+//                    byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
+//                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//                    getCroppedBitmap(decodedByte);
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -184,7 +189,6 @@ public class UserProfile extends AppCompatActivity {
             }
             Bitmap bitmap = getPath(data.getData());
             getCroppedBitmap(bitmap);
-            //mProfilePicture.setImageBitmap(bitmap);
         }
     }
 
@@ -212,9 +216,7 @@ public class UserProfile extends AppCompatActivity {
         //mProfilePicture.setImageBitmap(BitmapFactory.decodeFile(filePath));
         cursor.close();
         // Convert file path into bitmap image using below line.
-        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-
-        return bitmap;
+        return BitmapFactory.decodeFile(filePath);
     }
 
     private void selectImage() {
@@ -320,7 +322,12 @@ public class UserProfile extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
         byte[] byteFormat = stream.toByteArray();
         // get the base 64 string
-        String imgString = Base64.encodeToString(byteFormat, Base64.NO_WRAP);
-        return imgString;
+        return Base64.encodeToString(byteFormat, Base64.NO_WRAP);
+    }
+
+    @Override
+    public void onBackPressed() {
+        updateUser();
+        super.onBackPressed();
     }
 }
