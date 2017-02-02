@@ -15,6 +15,17 @@
             android:scaleType="centerCrop"
             android:src="@drawable/bandpicture" />
 
+        <ImageView
+            android:layout_width="210dp"
+            android:layout_height="210dp"
+            android:layout_below="@+id/header_cover_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-65dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circular_border_image"
+            android:elevation="4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/circular_border_image" />
 
         <ImageView
             android:id="@+id/user_profile_photo"
@@ -24,7 +35,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-60dp"
             android:adjustViewBounds="true"
-            android:background="@drawable/circular_border_image"
             android:elevation="5dp"
             android:scaleType="fitXY"
             android:src="@drawable/user_band_cbe4418fb27a65aab32033a18b86c4b8" />
@@ -173,30 +183,6 @@
             android:focusableInTouchMode="true"
             android:paddingBottom="20dp">
 
-            <ImageButton
-                android:id="@+id/saveChangedData"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="35dp"
-                android:background="@null"
-                android:paddingBottom="24dp"
-                android:paddingTop="20dp"
-                android:src="@drawable/ic_menu_saver" />
-
-            <ImageButton
-                android:id="@+id/change_user_photo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:background="@null"
-                android:onClick="ask"
-                android:paddingBottom="24dp"
-                android:paddingTop="20dp"
-                android:src="@drawable/ic_menu_camera" />
-
             <EditText
                 android:id="@+id/user_profile_name"
                 android:layout_width="wrap_content"
@@ -215,3 +201,7 @@
         </RelativeLayout>
     </RelativeLayout>
 </ScrollView>
+
+    <!--<ImageButton--><!--android:id="@+id/saveChangedData"--><!--android:layout_width="40dp"--><!--android:layout_height="40dp"--><!--android:layout_alignParentEnd="true"--><!--android:layout_alignParentRight="true"--><!--android:layout_marginRight="35dp"--><!--android:background="@null"--><!--android:paddingBottom="24dp"--><!--android:paddingTop="20dp"--><!--android:src="@drawable/ic_menu_saver" />-->
+
+    <!--<ImageButton--><!--android:id="@+id/change_user_photo"--><!--android:layout_width="40dp"--><!--android:layout_height="40dp"--><!--android:layout_alignParentEnd="true"--><!--android:layout_alignParentRight="true"--><!--android:background="@null"--><!--android:onClick="ask"--><!--android:paddingBottom="24dp"--><!--android:paddingTop="20dp"--><!--android:src="@drawable/ic_menu_camera" />-->

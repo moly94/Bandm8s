@@ -4,7 +4,12 @@
     <item
         android:id="@+id/saveChangedData"
         android:title="@string/saveChangedDataInProfile"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_menu_saver"/>
 
+    <item
+        android:title="@string/changeProfilePicInProfile"
+        android:id="@+id/change_user_photo"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_menu_camera" />
 </menu>

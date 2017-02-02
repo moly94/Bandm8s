@@ -80,12 +80,7 @@ public class UserProfile extends AppCompatActivity {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         startupProfile();
-        mSaveProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateUser();
-            }
-        });
+
         mDataBase.child("users").child(mUserId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -121,16 +116,9 @@ public class UserProfile extends AppCompatActivity {
         mUserBiography = (EditText) findViewById(R.id.user_biography);
 
         mProfilePicture = (ImageView) findViewById(R.id.user_profile_photo);
-        mChangeProfilePicture = (ImageButton) findViewById(R.id.change_user_photo);
-        mChangeProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent imgIntent = new Intent();
-                imgIntent.setType("image/*");
-                imgIntent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
-            }
-        });
+
+
+
         mSaveProfile = (ImageButton) findViewById(R.id.saveChangedData);
 
     }
@@ -138,7 +126,7 @@ public class UserProfile extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.save_changed_profile_data, menu);
+        getMenuInflater().inflate(R.menu.user_profile_menu, menu);
         return true;
     }
 
@@ -214,7 +202,7 @@ public class UserProfile extends AppCompatActivity {
         cursor.moveToFirst();
         String filePath = cursor.getString(column_index);
         //mProfilePicture.setImageBitmap(BitmapFactory.decodeFile(filePath));
-        cursor.close();
+        //cursor.close();
         // Convert file path into bitmap image using below line.
         return BitmapFactory.decodeFile(filePath);
     }
@@ -236,8 +224,14 @@ public class UserProfile extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
         if (id == R.id.saveChangedData) {
             updateUser();
+        } else if (id == R.id.change_user_photo){
+            Intent imgIntent = new Intent();
+            imgIntent.setType("image/*");
+            imgIntent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(imgIntent, "Select Picture"), SELECT_PICTURE);
         }
 
         return super.onOptionsItemSelected(item);
@@ -283,7 +277,8 @@ public class UserProfile extends AppCompatActivity {
         String profilePic = mCurrentUser.getmProfilePic();
         byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        getCroppedBitmap(decodedByte);
+        loadBitmap(decodedByte);
+        //mProfilePicture.setImageBitmap(decodedByte);
 
         //set MultiSelectionSpinner Instruments
         String instrument = mCurrentUser.getmInstruments();
@@ -294,6 +289,17 @@ public class UserProfile extends AppCompatActivity {
 
         //set Biography of User
         mUserBiography.setText(mCurrentUser.getmBiography());
+    }
+
+    public void loadBitmap(Bitmap bitmap) {
+
+
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+
+        //roundedBitmapDrawable.setCornerRadius(100.0f);
+        roundedBitmapDrawable.setCircular(true);
+        //roundedBitmapDrawable.setAntiAlias(true);
+        mProfilePicture.setImageDrawable(roundedBitmapDrawable);
     }
 
     private void updateUser() {
