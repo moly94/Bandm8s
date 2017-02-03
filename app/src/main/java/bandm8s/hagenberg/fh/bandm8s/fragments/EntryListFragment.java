@@ -85,6 +85,8 @@ public abstract class EntryListFragment extends Fragment {
                     public void onClick(View view) {
                         //Toast.makeText(getActivity(), entryKey, Toast.LENGTH_LONG).show();
 
+
+
                         Fragment f = getFragmentManager().findFragmentById(R.id.pager);
 
                         if (f instanceof ChatEntriesFragment){
