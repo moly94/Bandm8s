@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity
                     "MusicianFinder",
                     "BandFinder",
                     "Chats",
-                    "Chats-Passive"
+                    "My Entries"
             };
 
             @Override

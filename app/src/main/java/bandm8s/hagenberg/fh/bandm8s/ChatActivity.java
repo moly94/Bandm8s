@@ -254,8 +254,9 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                                 Map<String, Object> entryValues = entry.toMap();
 
                                 Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put("/user-chats/"+uid+"/" + key, entryValues);
-                                childUpdates.put("/user-chats-passive/"+entry.getmUid()+"/"+uid+"/"+key, entryValues);
+                                if(!uid.equals(entry.getmUid()))
+                                    childUpdates.put("/user-chats/"+uid+"/" + key, entryValues);
+                                childUpdates.put("/user-chats-passive/"+entry.getmUid()+"/"+key, entryValues);
                                 //mDatabaseReference.child("user-chats-passive").child(entry.getmUid()).push().child(key).setValue(entryValues);
                                 mDatabaseReference.updateChildren(childUpdates);
 
@@ -321,7 +322,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                     // A new comment has been added, add it to the displayed list
                     Message message = dataSnapshot.getValue(Message.class);
 
-                    if(message.opponentId.equals(messageKey)||message.uid.equals(messageKey)) {
+                    //if(message.opponentId.equals(messageKey)||message.uid.equals(messageKey)) {
 
                         // [START_EXCLUDE]
                         // Update RecyclerView
@@ -330,7 +331,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                         notifyItemInserted(mMessages.size() - 1);
                         //notifyDataSetChanged();
                         // [END_EXCLUDE]
-                    }
+                    //}
 
                 }
 
@@ -343,7 +344,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                 // comment and if so displayed the changed comment.
                 Message newMessage = dataSnapshot.getValue(Message.class);
 
-                if(newMessage.opponentId.equals(messageKey)||newMessage.uid.equals(messageKey)) {
+                //if(newMessage.opponentId.equals(messageKey)||newMessage.uid.equals(messageKey)) {
 
                     String messageKey = dataSnapshot.getKey();
 
@@ -360,7 +361,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                         Log.w(TAG, "onChildChanged:unknown_child:" + messageKey);
                     }
                     // [END_EXCLUDE]
-                }
+               // }
             }
 
             @Override

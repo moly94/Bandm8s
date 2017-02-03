@@ -159,7 +159,7 @@ public class CreateEntryActivity extends AppCompatActivity {
             //childUpdates.put("/user-entries/" + userid + "/" + key, entryValues
             childUpdates.put("/user-entries/" + key + "/" , entryValues);
         }
-        childUpdates.put("/user-chats/"+getUid()+"/"+ key + "/", entryValues);
+        childUpdates.put("/user-chats-passive/"+getUid()+"/"+ key + "/", entryValues);
 
         mDataBase.updateChildren(childUpdates);
         finish();

@@ -93,20 +93,11 @@ public abstract class EntryListFragment extends Fragment {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Entry e = dataSnapshot.getValue(Entry.class);
-                                    if(e.getmUid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                                        Toast.makeText(EntryListFragment.this.getContext(), "You can't start a chat with yourself!",
-                                                Toast.LENGTH_LONG).show();
-                                        //TODO: Add new Activity with Chat-Choser for own Posts
-                                        Intent i = new Intent(getActivity(), ChatActivity.class);
-                                        i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
 
-                                        startActivity(i);
-
-                                    } else {
                                         Intent i = new Intent(getActivity(), ChatActivity.class);
                                         i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
                                         startActivity(i);
-                                    }
+                                    
                                 }
 
                                 @Override
