@@ -124,16 +124,16 @@ public class EntryDetailActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_startChat) {
             //Start chat behaviour
-            if(mUserId.equals(mCurrentEntry.getmUid())) {
+            /*if(mUserId.equals(mCurrentEntry.getmUid())) {
                 Toast.makeText(getApplicationContext(), "You can't start a chat with yourself!",
                         Toast.LENGTH_LONG).show();
 
             }
-            else {
+            else {*/
                 Intent i = new Intent(getApplicationContext(), ChatActivity.class);
                 i.putExtra(EXTRA_ENTRY_KEY, mEntryKey);
                 startActivity(i);
-            }
+            //}
         } else if (id == R.id.action_showProfile) {
             Intent i = new Intent(this, OtherUserProfile.class);
             i.putExtra(EXTRA_USER_KEY, mCurrentEntry.getmUid());

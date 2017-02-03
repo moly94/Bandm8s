@@ -9,12 +9,13 @@
     <ImageView
         android:id="@+id/chat_opponent_profile_pic"
         android:src="@android:drawable/ic_menu_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
 
     <TextView
         android:id="@+id/chat_opponent"
-        style="@style/Base.TextAppearance.AppCompat.Small"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
