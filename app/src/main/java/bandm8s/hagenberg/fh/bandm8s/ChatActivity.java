@@ -300,12 +300,13 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
     private static class CommentViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageText;
+        public TextView messageText, messageAuthor;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
 
             messageText = (TextView) itemView.findViewById(R.id.message_text);
+            messageAuthor = (TextView) itemView.findViewById(R.id.message_author);
 
         }
     }
@@ -439,7 +440,8 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         @Override
         public void onBindViewHolder(CommentViewHolder holder, final int position) {
             final Message message = mMessages.get(position);
-            holder.messageText.setText(message.author+": "+message.text);
+            holder.messageAuthor.setText(message.author+": ");
+            holder.messageText.setText(message.text);
 
         }
 

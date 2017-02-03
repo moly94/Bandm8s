@@ -87,7 +87,7 @@ public abstract class EntryListFragment extends Fragment {
 
                         Fragment f = getFragmentManager().findFragmentById(R.id.pager);
 
-                        if (f instanceof ChatEntriesFragment){
+                        if (f instanceof ChatEntriesFragment || f instanceof ChatEntriesPassiveFragment){
 
                             entryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
