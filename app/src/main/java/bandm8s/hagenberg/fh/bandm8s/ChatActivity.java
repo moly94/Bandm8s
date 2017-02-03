@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -12,10 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +87,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
     private TextView mStarNumView;
     private EditText mMessageField;
     private ImageView mStarView;
-    private ImageView mChatAuthorPicView;
+    private ImageView mProfilePicture;
     private RecyclerView mMessagesRecycler;
     private static Button mMessageButton;
 
@@ -107,6 +111,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         }
 
 
+
         // Initialize Database
         mChatReference = FirebaseDatabase.getInstance().getReference()
                 .child("entries").child(mChatKey);
@@ -119,11 +124,12 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         //Init View
         mOpponentView = (TextView) findViewById(R.id.chat_opponent);
         mTitleView = (TextView) findViewById(R.id.chat_title);
-        mDescriptionView = (TextView) findViewById(R.id.chat_description);
+       // mDescriptionView = (TextView) findViewById(R.id.chat_description);
         mMessageField = (EditText) findViewById(R.id.field_comment_text);
 
         mMessageButton = (Button) findViewById(R.id.button_contribute);
         mMessagesRecycler = (RecyclerView) findViewById(R.id.recycler_comments);
+        mProfilePicture = (ImageView) findViewById(R.id.chat_opponent_profile_pic);
 
 
         mMessageButton.setOnClickListener(new View.OnClickListener() {
@@ -156,33 +162,33 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                 mEntry = dataSnapshot.getValue(Entry.class);
                 mOpponentView.setText(mEntry.getmAuthor());
                 mTitleView.setText(mEntry.getmTitle());
-                mDescriptionView.setText(mEntry.getmDescription());
+                //mDescriptionView.setText(mEntry.getmDescription());
+
 
                 //TODO: Implement when Profile Pic is ready
-               /*Query searchForUserPic = myRef.child(mChat.mUid).child("profilePic");
-               searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(DataSnapshot dataSnapshot) {
-                       StorageReference profileReference = FirebaseStorage.getInstance().getReferenceFromUrl(String.valueOf(dataSnapshot.getValue()));
+                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
+                Query searchForUserPic = myRef.child(mEntry.getmUid()).child("mProfilePic");
+                searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
+                        if(dataSnapshot.getValue() != null) {
+                            String profilePic = dataSnapshot.getValue().toString();
+                            Log.d("LUL", "Profilepic: " + profilePic);
 
-                       final long ONE_MEGABYTE = 1024 * 1024;
-                       profileReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                           @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-                           @Override
-                           public void onSuccess(byte[] bytes) {
-                               // Data for profilePic is returned
-                               Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                               mChatAuthorPicView.setImageBitmap(getCroppedBitmap(bm, 200));
-                           }
-                       }).addOnFailureListener(new OnFailureListener() {
-                           @Override
-                           public void onFailure(@NonNull Exception exception) {
-                               // Handle any errors
-                           }
-                       });
-                   }*/
+                            getCroppedBitmap(decodedByte);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -200,13 +206,25 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
         // Listen for comments
         mAdapter = new MessageAdapter(this, mMessageReference);
+
         mMessagesRecycler.setAdapter(mAdapter);
 
-        ViewGroup.LayoutParams params=mMessagesRecycler.getLayoutParams();
-        params.height=43;
+        ViewGroup.LayoutParams params = mMessagesRecycler.getLayoutParams();
+        params.height = 43;
         mMessagesRecycler.setLayoutParams(params);
+
     }
 
+    public void getCroppedBitmap(Bitmap bitmap) {
+
+
+        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+
+        //roundedBitmapDrawable.setCornerRadius(100.0f);
+        roundedBitmapDrawable.setCircular(true);
+        roundedBitmapDrawable.setAntiAlias(true);
+        mProfilePicture.setImageDrawable(roundedBitmapDrawable);
+    }
 
     private void onStarClicked(DatabaseReference chatsRef) {
         chatsRef.runTransaction(new Transaction.Handler() {

@@ -78,27 +78,7 @@ public class OtherUserProfile extends AppCompatActivity {
                 mUserBiography.setText(mCurrentUser.getmBiography());
 
                 Query searchForUserPic = mDataBase.child("users").child(mUserID).child("mProfilePic");
-                searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if(dataSnapshot.getValue() != null) {
-                            String profilePic = dataSnapshot.getValue().toString();
-                            Log.d("LUL", "Profilepic: " + profilePic);
-
-                            byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                            getCroppedBitmap(decodedByte);
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
 
             }
 

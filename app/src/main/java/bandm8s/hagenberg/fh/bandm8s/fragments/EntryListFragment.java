@@ -97,7 +97,7 @@ public abstract class EntryListFragment extends Fragment {
                                         Intent i = new Intent(getActivity(), ChatActivity.class);
                                         i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
                                         startActivity(i);
-                                    
+
                                 }
 
                                 @Override
