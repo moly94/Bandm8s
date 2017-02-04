@@ -131,6 +131,10 @@ public class CreateEntryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Creates an Entry-Object with the data from the Activity and writes it
+     * to the database.
+     */
     private void createEntry() {
         final String title = mTitle.getText().toString();
         final String location = mLocation.getText().toString();

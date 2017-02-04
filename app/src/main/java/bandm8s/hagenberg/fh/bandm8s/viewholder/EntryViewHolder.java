@@ -42,6 +42,10 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
         mProfileView = (ImageView) itemView.findViewById(R.id.entry_author_profile_pic);
     }
 
+    /**
+     * Binds the data from the database of the entry to the View objects
+     * @param entry A given Entry object
+     */
     public void bindToEntry(Entry entry) {
         mTitleView.setText(entry.getmTitle());
         // mAuthorView.setText(entry.getmAuthor());
@@ -92,6 +96,10 @@ public class EntryViewHolder extends RecyclerView.ViewHolder {
     }
 
 
+    /**
+     * Crops the profile picture and binds it to the ImageView.
+     * @param bitmap The profile picture as bitmap
+     */
     private void getCroppedBitmap(Bitmap bitmap) {
 
 
