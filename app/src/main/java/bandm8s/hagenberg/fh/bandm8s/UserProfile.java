@@ -88,6 +88,9 @@ public class UserProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * Sets up the Activity and connects the Edit Texts and Spinners to the global variables
+     */
     private void startupProfile() {
         mUserName = (EditText) findViewById(R.id.user_profile_name);
         mUserName.clearFocus();
@@ -167,6 +170,11 @@ public class UserProfile extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method uses the given Image and cuts it out circular and also sets the circular Image as the profile Picture
+     *
+     * @param bitmap square Profile Picture
+     */
     public void getCroppedBitmap(Bitmap bitmap) {
 
 
@@ -180,6 +188,12 @@ public class UserProfile extends AppCompatActivity {
 
 
     //Picaso https://github.com/square/picasso7
+
+    /**
+     * Gets the path of the choosen Image form the phone Storage and returns the image
+     * @param uri link to the picture
+     * @return the path of the image as a bitmap
+     */
     private Bitmap getPath(Uri uri) {
 
         String[] projection = {MediaStore.Images.Media.DATA};
@@ -193,15 +207,6 @@ public class UserProfile extends AppCompatActivity {
         // Convert file path into bitmap image using below line.
         return BitmapFactory.decodeFile(filePath);
     }
-
-    private void selectImage() {
-
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -225,10 +230,17 @@ public class UserProfile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * get id of the user
+     * @return userID as string
+     */
     static String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    /**
+     * when the Activity stars this method gets called, and sets everything stored in the Database to the users profile
+     */
     private void setProfile() {
 
         //set Name of User
@@ -265,7 +277,7 @@ public class UserProfile extends AppCompatActivity {
         String profilePic = mCurrentUser.getmProfilePic();
         byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        loadBitmap(decodedByte);
+        getCroppedBitmap(decodedByte);
 
         //set MultiSelectionSpinner Instruments
         String instrument = mCurrentUser.getmInstruments();
@@ -278,17 +290,9 @@ public class UserProfile extends AppCompatActivity {
         mUserBiography.setText(mCurrentUser.getmBiography());
     }
 
-    public void loadBitmap(Bitmap bitmap) {
-
-
-        RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
-
-        //roundedBitmapDrawable.setCornerRadius(100.0f);
-        roundedBitmapDrawable.setCircular(true);
-        //roundedBitmapDrawable.setAntiAlias(true);
-        mProfilePicture.setImageDrawable(roundedBitmapDrawable);
-    }
-
+    /**
+     * when the user saves the profile everything gets updated to the Firebase database
+     */
     private void updateUser() {
         String username = mUserName.getText().toString();
         String eMail = mUser.getEmail();
@@ -310,6 +314,11 @@ public class UserProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * This method gets called to form the given Bitmap into a String
+     * @param bitmap Image which gets transformed
+     * @return transformed string from bitmap
+     */
     public String getEncoded64ImageStringFromBitmap(Bitmap bitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
