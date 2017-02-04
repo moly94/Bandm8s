@@ -61,6 +61,9 @@ public class OtherUserProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * Method to get the data from the Firebase Database loaded into the User Profile
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -82,7 +85,7 @@ public class OtherUserProfile extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if(dataSnapshot.getValue() != null) {
+                        if (dataSnapshot.getValue() != null) {
                             String profilePic = dataSnapshot.getValue().toString();
                             Log.d("LUL", "Profilepic: " + profilePic);
 
@@ -109,6 +112,9 @@ public class OtherUserProfile extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the Activity and connects the TextViews to the global variables
+     */
     private void startupProfile() {
         mUserName = (TextView) findViewById(R.id.other_user_profile_name);
         mGenres = (TextView) findViewById(R.id.GenresString);
@@ -142,6 +148,11 @@ public class OtherUserProfile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method uses the given Image and cuts it out circular and also sets the circular Image as the profile Picture
+     *
+     * @param bitmap square Profile Picture
+     */
     private void getCroppedBitmap(Bitmap bitmap) {
 
 

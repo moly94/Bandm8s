@@ -16,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by Aneh Thakur on 5/7/2015.
+ * edited by Patrick Felbauer on 1/1/2017, because of sime Errors
  */
 public class MultiSelectionSpinner extends Spinner implements
         OnMultiChoiceClickListener {
