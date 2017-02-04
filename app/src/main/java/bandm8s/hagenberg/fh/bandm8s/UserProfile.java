@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -56,19 +55,11 @@ public class UserProfile extends AppCompatActivity {
     private EditText mUserName;
     private EditText mUserBiography;
 
-
-    private ImageButton mChangeProfilePicture;
     private ImageButton mSaveProfile;
     private ImageView mProfilePicture;
 
 
     private static final int SELECT_PICTURE = 0;
-
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
 
 
     @Override
@@ -117,8 +108,6 @@ public class UserProfile extends AppCompatActivity {
 
         mProfilePicture = (ImageView) findViewById(R.id.user_profile_photo);
 
-
-
         mSaveProfile = (ImageButton) findViewById(R.id.saveChangedData);
 
     }
@@ -140,7 +129,6 @@ public class UserProfile extends AppCompatActivity {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
-                    mChangeProfilePicture.setVisibility(View.INVISIBLE);
 //                    String profilePic = mCurrentUser.getmProfilePic();
 //                    byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
 //                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -153,7 +141,6 @@ public class UserProfile extends AppCompatActivity {
     }
 
     @Override
-    //Sollte eigentlich funktionieren, aber wenn ausgewählt wird stürtzt es ab oder macht nichts
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -227,7 +214,7 @@ public class UserProfile extends AppCompatActivity {
 
         if (id == R.id.saveChangedData) {
             updateUser();
-        } else if (id == R.id.change_user_photo){
+        } else if (id == R.id.change_user_photo) {
             Intent imgIntent = new Intent();
             imgIntent.setType("image/*");
             imgIntent.setAction(Intent.ACTION_GET_CONTENT);
@@ -278,7 +265,6 @@ public class UserProfile extends AppCompatActivity {
         byte[] decodedString = Base64.decode(profilePic.getBytes(), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         loadBitmap(decodedByte);
-        //mProfilePicture.setImageBitmap(decodedByte);
 
         //set MultiSelectionSpinner Instruments
         String instrument = mCurrentUser.getmInstruments();
