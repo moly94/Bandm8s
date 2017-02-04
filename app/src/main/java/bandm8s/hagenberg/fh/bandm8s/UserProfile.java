@@ -214,6 +214,7 @@ public class UserProfile extends AppCompatActivity {
 
         if (id == R.id.saveChangedData) {
             updateUser();
+            onBackPressed();
         } else if (id == R.id.change_user_photo) {
             Intent imgIntent = new Intent();
             imgIntent.setType("image/*");
