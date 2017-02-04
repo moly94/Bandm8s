@@ -8,7 +8,7 @@ import com.google.firebase.database.Query;
  * Created by Felix on 31.01.2017.
  */
 
-public class ChatEntriesFragment extends EntryListFragment {
+public class ChatEntriesFragment extends ChatListFragment {
 
     private FirebaseAuth mAuth;
 

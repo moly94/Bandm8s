@@ -7,7 +7,7 @@ import com.google.firebase.database.Query;
  * Created by Felix on 02.02.2017.
  */
 
-public class ChatEntriesPassiveFragment extends EntryListFragment {
+public class ChatEntriesPassiveFragment extends ChatListFragment {
 
     @Override
     public Query getQuery(DatabaseReference databaseReference) {

@@ -30,7 +30,7 @@ import bandm8s.hagenberg.fh.bandm8s.R;
 import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 import bandm8s.hagenberg.fh.bandm8s.viewholder.EntryViewHolder;
 
-public abstract class EntryListFragment extends Fragment {
+public abstract class ChatListFragment extends Fragment {
 
     private static final String TAG = "EntryListFragment";
     private FirebaseRecyclerAdapter<Entry, EntryViewHolder> mAdapter;
@@ -40,7 +40,7 @@ public abstract class EntryListFragment extends Fragment {
     private LinearLayoutManager mManager;
 
 
-    public EntryListFragment() {
+    public ChatListFragment() {
         // Required empty public constructor
     }
 
@@ -86,11 +86,23 @@ public abstract class EntryListFragment extends Fragment {
                         //Toast.makeText(getActivity(), entryKey, Toast.LENGTH_LONG).show();
 
 
+                        entryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Entry e = dataSnapshot.getValue(Entry.class);
 
-                            Intent i = new Intent(getActivity(), EntryDetailActivity.class);
-                            i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
-                            startActivity(i);
-                        
+                                Intent i = new Intent(getActivity(), ChatActivity.class);
+                                i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
+                                startActivity(i);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
 
                     }
                 });
@@ -129,3 +141,4 @@ public abstract class EntryListFragment extends Fragment {
     protected abstract Query getQuery(DatabaseReference databaseReference);
 
 }
+
