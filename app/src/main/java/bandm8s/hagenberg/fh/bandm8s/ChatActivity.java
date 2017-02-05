@@ -57,6 +57,11 @@ import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 import static bandm8s.hagenberg.fh.bandm8s.EntryDetailActivity.EXTRA_ENTRY_KEY;
 
+
+/**
+ * Activity for Group Chats with other users depending on their Entries
+ */
+
 @SuppressWarnings("LogConditional")
 public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthStateListener {
 
@@ -165,7 +170,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                 //mDescriptionView.setText(mEntry.getmDescription());
 
 
-                //TODO: Implement when Profile Pic is ready
+
                 DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("users");
                 Query searchForUserPic = myRef.child(mEntry.getmUid()).child("mProfilePic");
                 searchForUserPic.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -248,6 +253,9 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         });
     }
 
+    /**
+     * Posts a message to the firebase
+     */
     private void postMessage() {
         final String uid = getUid();
         FirebaseDatabase.getInstance().getReference().child("users").child(uid)
@@ -272,6 +280,7 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                                 Map<String, Object> entryValues = entry.toMap();
 
                                 Map<String, Object> childUpdates = new HashMap<>();
+                                //post to User Chats or user Chats passive depending on the UID
                                 if(!uid.equals(entry.getmUid()))
                                     childUpdates.put("/user-chats/"+uid+"/" + key, entryValues);
                                 childUpdates.put("/user-chats-passive/"+entry.getmUid()+"/"+key, entryValues);
@@ -298,11 +307,14 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
                 });
     }
 
-    private static class CommentViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * Messageviewholder is populated by the Messages
+     */
+    private static class MessageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView messageText, messageAuthor;
 
-        public CommentViewHolder(View itemView) {
+        public MessageViewHolder(View itemView) {
             super(itemView);
 
             messageText = (TextView) itemView.findViewById(R.id.message_text);
@@ -311,8 +323,10 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         }
     }
 
-
-    private static class MessageAdapter extends RecyclerView.Adapter<CommentViewHolder> {
+    /**
+     * MessageAdapter is for correctly displaying the messages
+     */
+    private static class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
 
         private Context mContext;
         private DatabaseReference mDatabaseReference;
@@ -330,6 +344,10 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
 
         }
 
+        /**
+         * Method loads Messages
+         * @param messageKey ID of the entry the messages belong to
+         */
         public void loadMessages(final String messageKey){
             // Create child event listener
             // [START child_event_listener_recycler]
@@ -431,14 +449,14 @@ public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthState
         }
 
         @Override
-        public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.item_message, parent, false);
-            return new CommentViewHolder(view);
+            return new MessageViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(CommentViewHolder holder, final int position) {
+        public void onBindViewHolder(MessageViewHolder holder, final int position) {
             final Message message = mMessages.get(position);
             holder.messageAuthor.setText(message.author+": ");
             holder.messageText.setText(message.text);
