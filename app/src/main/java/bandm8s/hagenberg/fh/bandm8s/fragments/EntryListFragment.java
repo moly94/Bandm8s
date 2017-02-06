@@ -83,10 +83,6 @@ public abstract class EntryListFragment extends Fragment {
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //Toast.makeText(getActivity(), entryKey, Toast.LENGTH_LONG).show();
-
-
-
                             Intent i = new Intent(getActivity(), EntryDetailActivity.class);
                             i.putExtra(EntryDetailActivity.EXTRA_ENTRY_KEY, entryKey);
                             startActivity(i);

@@ -47,6 +47,12 @@ public class CreateEntryActivity extends AppCompatActivity {
 
     private TextView mlblInstruments;
 
+    /**
+     * Sets up the Activity with the associated UI-Elements and adapters.
+     * Also fetches the data of the current user from the database and
+     * stores it for later use.
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

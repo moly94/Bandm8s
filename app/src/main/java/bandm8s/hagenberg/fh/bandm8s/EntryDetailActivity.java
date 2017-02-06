@@ -50,6 +50,10 @@ public class EntryDetailActivity extends AppCompatActivity {
     private TextView mDescription;
 
 
+    /**
+     * Sets up the Activity with the associated UI-Elements and adapters.
+     * Also fetches the Key of the Entry to View from the intent.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,10 @@ public class EntryDetailActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Loads the data of the Entry to show from the database and binds it
+     * to the UI-Elements.
+     */
     @Override
     protected void onStart() {
         super.onStart();

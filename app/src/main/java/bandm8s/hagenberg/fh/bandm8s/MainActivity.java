@@ -47,6 +47,11 @@ public class MainActivity extends BaseActivity
      */
     private GoogleApiClient client;
 
+    /**
+     * Sets up the Activity with the associated UI-Elements and adapters.
+     * Creates the ViewPager and fills it with Fragments for EntryLists and Chats.
+     * Checks if there is a user signed in, returns to login-Screen otherwise.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +172,9 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    /**
+     * Logs out the user.
+     */
     private void logOutUser() {
         FirebaseAuth.getInstance().signOut();
     }
