@@ -191,6 +191,7 @@ public class UserProfile extends AppCompatActivity {
 
     /**
      * Gets the path of the choosen Image form the phone Storage and returns the image
+     *
      * @param uri link to the picture
      * @return the path of the image as a bitmap
      */
@@ -232,6 +233,7 @@ public class UserProfile extends AppCompatActivity {
 
     /**
      * get id of the user
+     *
      * @return userID as string
      */
     static String getUid() {
@@ -300,13 +302,12 @@ public class UserProfile extends AppCompatActivity {
         String skill = mSkill.getSelectedItem().toString();
         String instruments = mInstruments.getSelectedItemsAsString();
         String biography = mUserBiography.getText().toString();
-
         mProfilePicture.buildDrawingCache();
         Bitmap bitmap = mProfilePicture.getDrawingCache();
         String profilePicture = getEncoded64ImageStringFromBitmap(bitmap);
 
 
-        User bandObject = new User(username, genre, skill, instruments, biography, eMail, profilePicture);
+        User bandObject = new User(username, genre, skill, instruments, biography, eMail, profilePicture, mCurrentUser.ismIsBand());
         DatabaseReference myRef = mFireBaseDataBase.getReference("users");
         myRef.child(mUser.getUid()).setValue(bandObject);
         Toast.makeText(UserProfile.this, "UserProfile Successfully updated",
@@ -316,6 +317,7 @@ public class UserProfile extends AppCompatActivity {
 
     /**
      * This method gets called to form the given Bitmap into a String
+     *
      * @param bitmap Image which gets transformed
      * @return transformed string from bitmap
      */
