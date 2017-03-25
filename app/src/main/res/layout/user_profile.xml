@@ -1,7 +1,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -199,7 +200,9 @@
 
 
         </RelativeLayout>
+
     </RelativeLayout>
+
 </ScrollView>
 
     <!--<ImageButton--><!--android:id="@+id/saveChangedData"--><!--android:layout_width="40dp"--><!--android:layout_height="40dp"--><!--android:layout_alignParentEnd="true"--><!--android:layout_alignParentRight="true"--><!--android:layout_marginRight="35dp"--><!--android:background="@null"--><!--android:paddingBottom="24dp"--><!--android:paddingTop="20dp"--><!--android:src="@drawable/ic_menu_saver" />-->

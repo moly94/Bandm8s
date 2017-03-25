@@ -22,6 +22,10 @@
             android:id="@+id/nav_logout"
             android:icon="@android:drawable/ic_menu_revert"
             android:title="@string/logout" />
+        <item
+            android:id="@+id/testAds"
+            android:icon="@android:drawable/ic_menu_revert"
+            android:title="Credits" />
     </group>
 
     <!--<item android:title="Communicate">-->

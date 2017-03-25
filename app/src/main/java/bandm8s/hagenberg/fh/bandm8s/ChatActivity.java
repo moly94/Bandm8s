@@ -1,22 +1,14 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -30,8 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -42,17 +32,15 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import bandm8s.hagenberg.fh.bandm8s.models.Chat;
 import bandm8s.hagenberg.fh.bandm8s.models.Entry;
 import bandm8s.hagenberg.fh.bandm8s.models.Message;
-import bandm8s.hagenberg.fh.bandm8s.models.Chat;
 import bandm8s.hagenberg.fh.bandm8s.models.User;
 
 import static bandm8s.hagenberg.fh.bandm8s.EntryDetailActivity.EXTRA_ENTRY_KEY;
@@ -63,7 +51,7 @@ import static bandm8s.hagenberg.fh.bandm8s.EntryDetailActivity.EXTRA_ENTRY_KEY;
  */
 
 @SuppressWarnings("LogConditional")
-public class ChatActivity extends BaseActivity implements FirebaseAuth.AuthStateListener {
+public  class ChatActivity extends BaseActivity implements FirebaseAuth.AuthStateListener {
 
     private static final String TAG = "ChatActivity";
 

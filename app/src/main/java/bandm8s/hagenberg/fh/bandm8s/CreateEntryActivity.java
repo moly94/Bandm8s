@@ -1,14 +1,11 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
-import android.nfc.Tag;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,6 +54,12 @@ public class CreateEntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
+        /*MobileAds.initialize(this, "ca-app-pub-8757458302977686/2799565851");
+        AdView myAdview = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        myAdview.loadAd(adRequest);*/
 
         mGenres = (Spinner) findViewById(R.id.spinnerGenre);
         // Create an ArrayAdapter using the string array and a default spinner layout

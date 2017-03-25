@@ -1,28 +1,25 @@
 package bandm8s.hagenberg.fh.bandm8s;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 import bandm8s.hagenberg.fh.bandm8s.fragments.BandEntriesFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.ChatEntriesFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.ChatEntriesPassiveFragment;
-import bandm8s.hagenberg.fh.bandm8s.fragments.EntryListFragment;
 import bandm8s.hagenberg.fh.bandm8s.fragments.UserEntriesFragment;
 
 public class MainActivity extends BaseActivity
@@ -58,6 +54,13 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        MobileAds.initialize(this, "ca-app-pub-8757458302977686/2799565851");
+        AdView myAdview = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                //.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        myAdview.loadAd(adRequest);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +168,9 @@ public class MainActivity extends BaseActivity
 
         } else if (id == R.id.nav_logout) {
             logOutUser();
-        }
+        } else if(id == R.id.testAds){
+              startActivity(new Intent(MainActivity.this, TestAds.class));
+          }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
